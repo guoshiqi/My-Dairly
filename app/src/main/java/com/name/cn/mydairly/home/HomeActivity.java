@@ -1,11 +1,11 @@
-package com.name.cn.mydairly;
+package com.name.cn.mydairly.home;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.name.cn.mydairly.data.DaoSession;
+import com.name.cn.mydairly.R;
+import com.name.cn.mydairly.framework.BaseActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class HomeActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
