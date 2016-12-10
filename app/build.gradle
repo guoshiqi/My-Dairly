@@ -52,6 +52,12 @@ android {
         }
     }
 
+    greendao {
+        schemaVersion 1
+        daoPackage 'com.name.cn.mydiary.data.source.local'
+        targetGenDir 'src/main/java'
+    }
+
     // Remove mockRelease as it's not needed.
     android.variantFilter { variant ->
         if (variant.buildType.name.equals('release')

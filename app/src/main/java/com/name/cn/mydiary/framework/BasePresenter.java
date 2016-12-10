@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.name.cn.mydairly.framework;
+package com.name.cn.mydiary.framework;
 
 public interface BasePresenter {
 

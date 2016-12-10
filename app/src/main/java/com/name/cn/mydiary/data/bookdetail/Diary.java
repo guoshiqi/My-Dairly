@@ -1,4 +1,4 @@
-package com.name.cn.mydairly.data.source.local.BookDetail;
+package com.name.cn.mydiary.data.bookdetail;
 
 import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Entity;
@@ -8,6 +8,10 @@ import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.ToMany;
 
 import java.util.List;
+import com.name.cn.mydiary.data.source.local.DaoSession;
+import com.name.cn.mydiary.data.source.local.JournalDao;
+import com.name.cn.mydiary.data.source.local.DiaryDao;
+
 
 /**
  * 日记本

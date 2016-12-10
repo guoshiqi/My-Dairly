@@ -1,4 +1,4 @@
-package com.name.cn.mydairly;
+package com.name.cn.mydiary;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

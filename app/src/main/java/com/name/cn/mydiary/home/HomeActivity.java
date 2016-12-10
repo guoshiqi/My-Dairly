@@ -1,9 +1,9 @@
-package com.name.cn.mydairly.home;
+package com.name.cn.mydiary.home;
 
 import android.os.Bundle;
 
-import com.name.cn.mydairly.R;
-import com.name.cn.mydairly.framework.BaseActivity;
+import com.name.cn.mydiary.R;
+import com.name.cn.mydiary.framework.BaseActivity;
 
 public class HomeActivity extends BaseActivity {
 

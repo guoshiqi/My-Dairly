@@ -1,10 +1,6 @@
-package com.name.cn.mydairly.data.source.local;
+package com.name.cn.mydiary.data;
 
-import com.name.cn.mydairly.data.source.local.BookDetail.DaoSession;
-import com.name.cn.mydairly.data.source.local.BookDetail.Diary;
-import com.name.cn.mydairly.data.source.local.BookDetail.DiaryDao;
-import com.name.cn.mydairly.data.source.local.BookDetail.Memorandum;
-import com.name.cn.mydairly.data.source.local.BookDetail.MemorandumDao;
+
 
 import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Entity;
@@ -13,6 +9,14 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.ToMany;
 
 import java.util.List;
+
+
+import com.name.cn.mydiary.data.bookdetail.Diary;
+import com.name.cn.mydiary.data.bookdetail.Memorandum;
+import com.name.cn.mydiary.data.source.local.DaoSession;
+import com.name.cn.mydiary.data.source.local.DiaryDao;
+import com.name.cn.mydiary.data.source.local.MemorandumDao;
+import com.name.cn.mydiary.data.source.local.BookListDao;
 
 /**
  * 首页包含类型
@@ -181,9 +185,7 @@ public class BookList {
         this.diaryOwnerId = diaryOwnerId;
     }
 
-    /**
-     * called by internal mechanisms, do not call yourself.
-     */
+    /** called by internal mechanisms, do not call yourself. */
     @Generated(hash = 1019987762)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;

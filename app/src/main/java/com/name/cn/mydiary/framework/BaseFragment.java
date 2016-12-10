@@ -1,4 +1,4 @@
-package com.name.cn.mydairly.framework;
+package com.name.cn.mydiary.framework;
 
 import android.support.v4.app.Fragment;
 

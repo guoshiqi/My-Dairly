@@ -1,6 +1,6 @@
-package com.name.cn.mydairly.data.source.local;
+package com.name.cn.mydiary.data;
 
-import com.name.cn.mydairly.data.source.local.BookDetail.DaoSession;
+
 
 import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Entity;
@@ -10,6 +10,10 @@ import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.ToOne;
 
 import java.util.Date;
+import com.name.cn.mydiary.data.source.local.DaoSession;
+import com.name.cn.mydiary.data.source.local.BookListDao;
+import com.name.cn.mydiary.data.source.local.UserDao;
+
 
 
 /**
@@ -177,9 +181,7 @@ public class User {
     }
 
 
-    /**
-     * called by internal mechanisms, do not call yourself.
-     */
+    /** called by internal mechanisms, do not call yourself. */
     @Generated(hash = 2059241980)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;

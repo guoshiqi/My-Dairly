@@ -1,4 +1,4 @@
-package com.name.cn.mydairly.data.source.local.BookDetail;
+package com.name.cn.mydiary.data.bookdetail;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
@@ -6,30 +6,30 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
 
 /**
- * 日记
+ * 备忘录具体条目
  * Created by guoshiqi on 2016/12/9.
  */
 
 @Entity
-public class Journal {
+public class MemorandumItem {
 
     @Id
     private Long id;
 
-    private Long journalOwnId;
+    private Long memorandumItemOwnId;
 
     @NotNull
     private String name;
 
-    @Generated(hash = 1003006010)
-    public Journal(Long id, Long journalOwnId, @NotNull String name) {
+    @Generated(hash = 2049789004)
+    public MemorandumItem(Long id, Long memorandumItemOwnId, @NotNull String name) {
         this.id = id;
-        this.journalOwnId = journalOwnId;
+        this.memorandumItemOwnId = memorandumItemOwnId;
         this.name = name;
     }
 
-    @Generated(hash = 1562390721)
-    public Journal() {
+    @Generated(hash = 16864648)
+    public MemorandumItem() {
     }
 
     public Long getId() {
@@ -49,13 +49,12 @@ public class Journal {
         this.name = name;
     }
 
-    public Long getJournalOwnId() {
-        return this.journalOwnId;
+    public Long getMemorandumItemOwnId() {
+        return this.memorandumItemOwnId;
     }
 
-    public void setJournalOwnId(Long journalOwnId) {
-        this.journalOwnId = journalOwnId;
+    public void setMemorandumItemOwnId(Long memorandumItemOwnId) {
+        this.memorandumItemOwnId = memorandumItemOwnId;
     }
-
 
 }
