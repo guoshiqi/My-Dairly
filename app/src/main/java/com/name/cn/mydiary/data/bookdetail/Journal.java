@@ -3,6 +3,7 @@ package com.name.cn.mydiary.data.bookdetail;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Keep;
 import org.greenrobot.greendao.annotation.NotNull;
 
 /**
@@ -57,5 +58,14 @@ public class Journal {
         this.journalOwnId = journalOwnId;
     }
 
+    @Keep
+    public String getStringId() {
+        return id.toString();
+    }
+
+    @Keep
+    public String getStringJournalOwnId() {
+        return journalOwnId.toString();
+    }
 
 }
