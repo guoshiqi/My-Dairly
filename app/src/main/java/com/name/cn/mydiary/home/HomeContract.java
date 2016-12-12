@@ -17,17 +17,14 @@ public interface HomeContract {
 
         void showBooksList();
 
-        void setTitle(String title);
 
-        void setDescription(String description);
 
 
     }
 
     interface Presenter extends BasePresenter {
 
-        void saveDiary(String title, String description);
+        void saveBook(String title, String description);
 
-        boolean isDataMissing();
     }
 }
