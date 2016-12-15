@@ -1,0 +1,157 @@
+package com.name.cn.mydiary.data;
+
+import android.support.test.InstrumentationRegistry;
+import android.support.test.filters.LargeTest;
+import android.support.test.runner.AndroidJUnit4;
+
+import com.name.cn.mydiary.data.bookdetail.Journal;
+import com.name.cn.mydiary.data.source.local.JournalLocalDataSource;
+import com.name.cn.mydiary.util.schedulers.BaseSchedulerProvider;
+import com.name.cn.mydiary.util.schedulers.ImmediateSchedulerProvider;
+import com.name.cn.mydiary.util.schedulers.SchedulerProvider;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import java.util.List;
+
+import rx.observers.TestSubscriber;
+
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsCollectionContaining.hasItems;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+
+/**
+ * 数据库测试
+ * Created by guoshiqi on 2016/12/15.
+ */
+
+@RunWith(AndroidJUnit4.class)
+@LargeTest
+public class JournalLocalDataSourceTest {
+
+    private final static String TITLE = "title";
+
+    private final static String TITLE2 = "title2";
+
+    private final static String TITLE3 = "title3";
+
+    private JournalLocalDataSource mLocalDataSource;
+
+    @Before
+    public void setup() {
+        JournalLocalDataSource.destroyInstance();
+        BaseSchedulerProvider mSchedulerProvider = new ImmediateSchedulerProvider();
+
+        mLocalDataSource = JournalLocalDataSource.getInstance(
+                InstrumentationRegistry.getTargetContext(), mSchedulerProvider);
+    }
+
+    @After
+    public void cleanUp() {
+        mLocalDataSource.deleteAllJournals();
+    }
+
+    @Test
+    public void testPreConditions() {
+        assertNotNull(mLocalDataSource);
+    }
+
+    @Test
+    public void saveJournal_retrievesTask() {
+        // Given a new journal
+        final Journal newJournal = new Journal(null, 1L, TITLE);
+
+        // When saved into the persistent repository
+        mLocalDataSource.saveJournal(newJournal);
+
+        // Then the task can be retrieved from the persistent repository
+        TestSubscriber<Journal> testSubscriber = new TestSubscriber<Journal>() {
+            @Override
+            public void onNext(Journal journal) {
+                assertValue(newJournal);
+            }
+        };
+        mLocalDataSource.getJournal(newJournal.getStringId()).observeOn(SchedulerProvider.getInstance().ui()).subscribe(testSubscriber);
+
+    }
+
+    @Test
+    public void deleteAllJournals_emptyListOfRetrievedTask() {
+        // Given a new task in the persistent repository and a mocked callback
+        Journal newJournal = new Journal(null, 1L, TITLE);
+        mLocalDataSource.saveJournal(newJournal);
+
+
+        // When all tasks are deleted
+        mLocalDataSource.deleteAllJournals();
+
+        // Then the retrieved tasks is an empty list
+        TestSubscriber<List<Journal>> testSubscriber = new TestSubscriber<List<Journal>>() {
+            @Override
+            public void onNext(List<Journal> journals) {
+                assertThat(journals.isEmpty(), is(true));
+            }
+        };
+        mLocalDataSource.getAllJournals().observeOn(SchedulerProvider.getInstance().ui()).subscribe(testSubscriber);
+
+    }
+
+    @Test
+    public void getTasks_retrieveSavedTasks() {
+        // Given 2 new tasks in the persistent repository
+        final Journal newJournal1 = new Journal(null, 1L, TITLE);
+        mLocalDataSource.saveJournal(newJournal1);
+        final Journal newJournal2 = new Journal(null, 2L, TITLE);
+        mLocalDataSource.saveJournal(newJournal2);
+
+
+        // Then the tasks can be retrieved from the persistent repository
+        TestSubscriber<List<Journal>> testSubscriber = new TestSubscriber<List<Journal>>() {
+            @Override
+            public void onNext(List<Journal> journals) {
+                assertThat(journals, hasItems(newJournal1, newJournal2));
+            }
+        };
+        mLocalDataSource.getAllJournals().observeOn(SchedulerProvider.getInstance().ui()).subscribe(testSubscriber);
+
+    }
+
+    @Test
+    public void getTask_whenTaskNotSaved() {
+        //Given that no task has been saved
+        //When querying for a task, null is returned.
+        TestSubscriber<Journal> testSubscriber = new TestSubscriber<Journal>() {
+            @Override
+            public void onNext(Journal journal) {
+                assertValue(null);
+            }
+        };
+        mLocalDataSource.getJournal("1").observeOn(SchedulerProvider.getInstance().ui()).subscribe(testSubscriber);
+    }
+
+    @Test
+    public void getJournals_WithOwnBookId() {
+        //插入2种bookid的对象
+        final Journal newJournal1 = new Journal(null, 1L, TITLE);
+        mLocalDataSource.saveJournal(newJournal1);
+        final Journal newJournal2 = new Journal(null, 2L, TITLE);
+        mLocalDataSource.saveJournal(newJournal2);
+        final Journal newJournal3 = new Journal(null, 2L, TITLE);
+        mLocalDataSource.saveJournal(newJournal3);
+
+
+        //获取其中一种bookid的list
+        TestSubscriber<List<Journal>> testSubscriber = new TestSubscriber<List<Journal>>() {
+            @Override
+            public void onNext(List<Journal> list) {
+                assertThat(list, hasItems(newJournal2, newJournal3));
+            }
+        };
+        mLocalDataSource.getJournals("2").observeOn(SchedulerProvider.getInstance().ui()).subscribe(testSubscriber);
+
+    }
+}

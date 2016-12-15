@@ -8,9 +8,9 @@ import com.name.cn.mydiary.data.bookdetail.Journal;
 import com.name.cn.mydiary.data.source.JournalDataSource;
 import com.name.cn.mydiary.framework.GreenDaoManager;
 import com.name.cn.mydiary.util.schedulers.BaseSchedulerProvider;
+import com.name.cn.mydiary.util.schedulers.SchedulerProvider;
 
 import org.greenrobot.greendao.annotation.NotNull;
-import org.greenrobot.greendao.rx.RxDao;
 
 import java.util.List;
 
@@ -28,10 +28,16 @@ public class JournalLocalDataSource implements JournalDataSource {
     private static JournalLocalDataSource INSTANCE;
 
     @NotNull
-    private RxDao<Journal, Long> rxDao;
-
-    @NotNull
     private JournalDao dao;
+
+    public static JournalLocalDataSource getInstance(
+            @NonNull Context context,
+            @NonNull BaseSchedulerProvider schedulerProvider) {
+        if (INSTANCE == null) {
+            INSTANCE = new JournalLocalDataSource(context, schedulerProvider);
+        }
+        return INSTANCE;
+    }
 
 
     // Prevent direct instantiation.
@@ -40,26 +46,24 @@ public class JournalLocalDataSource implements JournalDataSource {
         checkNotNull(context, "context cannot be null");
         checkNotNull(schedulerProvider, "scheduleProvider cannot be null");
         dao = GreenDaoManager.getInstance().getmDaoSession().getJournalDao();
-        rxDao = GreenDaoManager.getInstance().getmDaoSession().getJournalDao().rx();
-
     }
 
     @Override
     public Observable<List<Journal>> getAllJournals() {
-        return rxDao.loadAll();
+        return Observable.just(dao.loadAll()).subscribeOn(SchedulerProvider.getInstance().io());
     }
 
     @Override
     public Observable<List<Journal>> getJournals(@NonNull String journalOwnId) {
 
         GreenDaoManager.getInstance().getmDaoSession().clear();
-        return Observable.from(dao._queryDiary_JournalList(Long.getLong(journalOwnId))).toList();
+        return Observable.from(dao._queryDiary_JournalList(Long.valueOf(journalOwnId))).toList().subscribeOn(SchedulerProvider.getInstance().io());
     }
 
     @Override
     public Observable<Journal> getJournal(@NonNull String journalId) {
 
-        return rxDao.load(Long.getLong(journalId));
+        return Observable.just(dao.load(Long.valueOf(journalId))).subscribeOn(SchedulerProvider.getInstance().io());
     }
 
     @Override
@@ -80,6 +84,10 @@ public class JournalLocalDataSource implements JournalDataSource {
 
     @Override
     public void deleteJournal(@NonNull String journalId) {
-        dao.deleteByKey(Long.getLong(journalId));
+        dao.deleteByKey(Long.valueOf(journalId));
+    }
+
+    public static void destroyInstance() {
+        INSTANCE = null;
     }
 }

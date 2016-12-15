@@ -28,7 +28,7 @@ public class JournalsRepository implements JournalDataSource {
     @Nullable
     private static JournalsRepository INSTANCE = null;
     @NonNull
-    private final JournalLocalDataSource mJournalLocalDataSource;
+    private final JournalDataSource mJournalLocalDataSource;
 
     //cache
     @Nullable
@@ -41,7 +41,7 @@ public class JournalsRepository implements JournalDataSource {
     @VisibleForTesting
     private boolean mCacheIsDirty = false;
 
-    private JournalsRepository(@NonNull JournalLocalDataSource journalLocalDataSource) {
+    private JournalsRepository(@NonNull JournalDataSource journalLocalDataSource) {
 
         mJournalLocalDataSource = checkNotNull(journalLocalDataSource);
     }
@@ -52,7 +52,7 @@ public class JournalsRepository implements JournalDataSource {
      * @param journalLocalDataSource the device storage data source
      * @return the {@link JournalsRepository} instance
      */
-    public static JournalsRepository getInstance(@NonNull JournalLocalDataSource journalLocalDataSource) {
+    public static JournalsRepository getInstance(@NonNull JournalDataSource journalLocalDataSource) {
         if (INSTANCE == null) {
             INSTANCE = new JournalsRepository(journalLocalDataSource);
         }
@@ -60,7 +60,7 @@ public class JournalsRepository implements JournalDataSource {
     }
 
     /**
-     * Used to force {@link #getInstance(JournalLocalDataSource)} to create a new instance
+     * Used to force {@link #getInstance(JournalDataSource)} to create a new instance
      * next time it's called.
      */
     public static void destroyInstance() {

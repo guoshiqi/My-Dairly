@@ -1,5 +1,7 @@
 package com.name.cn.mydiary.data.bookdetail;
 
+import com.google.common.base.Objects;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
@@ -14,16 +16,18 @@ import org.greenrobot.greendao.annotation.NotNull;
 @Entity
 public class Journal {
 
-    @Id
+
+    @Id(autoincrement = true)
     private Long id;
 
+    @NotNull
     private Long journalOwnId;
 
     @NotNull
     private String name;
 
-    @Generated(hash = 1003006010)
-    public Journal(Long id, Long journalOwnId, @NotNull String name) {
+    @Generated(hash = 1133720453)
+    public Journal(Long id, @NotNull Long journalOwnId, @NotNull String name) {
         this.id = id;
         this.journalOwnId = journalOwnId;
         this.name = name;
@@ -65,7 +69,18 @@ public class Journal {
 
     @Keep
     public String getStringJournalOwnId() {
-        return journalOwnId.toString();
+        return getId().toString();
     }
 
+    @Keep
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        Journal needCompare = (Journal) obj;
+        return Objects.equal(id, needCompare.id) && Objects.equal(journalOwnId, needCompare.journalOwnId)
+                && Objects.equal(name, needCompare.name);
+
+    }
 }
