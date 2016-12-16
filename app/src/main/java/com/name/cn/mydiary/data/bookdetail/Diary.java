@@ -8,9 +8,9 @@ import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.ToMany;
 
 import java.util.List;
-import com.name.cn.mydiary.data.source.local.DaoSession;
-import com.name.cn.mydiary.data.source.local.JournalDao;
-import com.name.cn.mydiary.data.source.local.DiaryDao;
+import com.name.cn.mydiary.data.source.local.dao.DaoSession;
+import com.name.cn.mydiary.data.source.local.dao.JournalDao;
+import com.name.cn.mydiary.data.source.local.dao.DiaryDao;
 
 
 /**

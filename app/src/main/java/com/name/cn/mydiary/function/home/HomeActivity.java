@@ -1,9 +1,10 @@
-package com.name.cn.mydiary.home;
+package com.name.cn.mydiary.function.home;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 
+import com.name.cn.mydiary.Injection;
 import com.name.cn.mydiary.R;
 import com.name.cn.mydiary.framework.BaseActivity;
 import com.name.cn.mydiary.util.ActivityUtils;
@@ -32,12 +33,12 @@ public class HomeActivity extends BaseActivity {
                     getSupportFragmentManager(), homeFragment, R.id.contentFrame);
         }
 
-//        // Create the presenter
-//        HomeFragment = new HomeFragment(
-//                Injection.provideTasksRepository(getApplicationContext()),
-//                tasksFragment,
+        // Create the presenter
+//        mHomePresenter = new HomePresenter(
+//                Injection.provideTasksRepository(Injection.provideTasksRepository(getApplicationContext())),
+//                homeFragment,
 //                Injection.provideSchedulerProvider());
-//
+
 //        // Load previously saved state, if available.
 //        if (savedInstanceState != null) {
 //            TasksFilterType currentFiltering =

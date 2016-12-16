@@ -1,4 +1,4 @@
-package com.name.cn.mydiary.home;
+package com.name.cn.mydiary.function.home;
 
 import android.support.v4.app.Fragment;
 

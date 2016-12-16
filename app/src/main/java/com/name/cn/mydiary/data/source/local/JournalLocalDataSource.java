@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 
 import com.name.cn.mydiary.data.bookdetail.Journal;
 import com.name.cn.mydiary.data.source.JournalDataSource;
+import com.name.cn.mydiary.data.source.local.dao.JournalDao;
 import com.name.cn.mydiary.framework.GreenDaoManager;
 import com.name.cn.mydiary.util.schedulers.BaseSchedulerProvider;
 import com.name.cn.mydiary.util.schedulers.SchedulerProvider;

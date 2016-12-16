@@ -13,10 +13,10 @@ import java.util.List;
 
 import com.name.cn.mydiary.data.bookdetail.Diary;
 import com.name.cn.mydiary.data.bookdetail.Memorandum;
-import com.name.cn.mydiary.data.source.local.DaoSession;
-import com.name.cn.mydiary.data.source.local.DiaryDao;
-import com.name.cn.mydiary.data.source.local.MemorandumDao;
-import com.name.cn.mydiary.data.source.local.BookListDao;
+import com.name.cn.mydiary.data.source.local.dao.DaoSession;
+import com.name.cn.mydiary.data.source.local.dao.DiaryDao;
+import com.name.cn.mydiary.data.source.local.dao.MemorandumDao;
+import com.name.cn.mydiary.data.source.local.dao.BookListDao;
 
 /**
  * 首页包含类型

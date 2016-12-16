@@ -1,4 +1,4 @@
-package com.name.cn.mydiary.data.source.local;
+package com.name.cn.mydiary.data.source.local.dao;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

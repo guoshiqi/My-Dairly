@@ -1,7 +1,7 @@
 package com.name.cn.mydiary.framework;
 
-import com.name.cn.mydiary.data.source.local.DaoMaster;
-import com.name.cn.mydiary.data.source.local.DaoSession;
+import com.name.cn.mydiary.data.source.local.dao.DaoMaster;
+import com.name.cn.mydiary.data.source.local.dao.DaoSession;
 
 /**
  * greendao use
@@ -27,7 +27,7 @@ public class GreenDaoManager {
     /**
      * 对外唯一实例的接口
      *
-     * @return
+     * @return INSTANCE
      */
     public static GreenDaoManager getInstance() {
         return SingleInstanceHolder.INSTANCE;

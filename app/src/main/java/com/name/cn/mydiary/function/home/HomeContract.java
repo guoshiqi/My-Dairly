@@ -1,4 +1,4 @@
-package com.name.cn.mydiary.home;
+package com.name.cn.mydiary.function.home;
 
 import com.name.cn.mydiary.framework.BasePresenter;
 import com.name.cn.mydiary.framework.BaseView;

@@ -54,7 +54,7 @@ android {
 
     greendao {
         schemaVersion 1
-        daoPackage 'com.name.cn.mydiary.data.source.local'
+        daoPackage 'com.name.cn.mydiary.data.source.local.dao'
         targetGenDir 'src/main/java'
     }
 

@@ -10,9 +10,9 @@ import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.ToOne;
 
 import java.util.Date;
-import com.name.cn.mydiary.data.source.local.DaoSession;
-import com.name.cn.mydiary.data.source.local.BookListDao;
-import com.name.cn.mydiary.data.source.local.UserDao;
+import com.name.cn.mydiary.data.source.local.dao.DaoSession;
+import com.name.cn.mydiary.data.source.local.dao.BookListDao;
+import com.name.cn.mydiary.data.source.local.dao.UserDao;
 
 
 
