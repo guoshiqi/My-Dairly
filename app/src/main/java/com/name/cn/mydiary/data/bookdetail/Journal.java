@@ -8,6 +8,9 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Keep;
 import org.greenrobot.greendao.annotation.NotNull;
 
+import java.util.Date;
+
+
 /**
  * 日记
  * Created by guoshiqi on 2016/12/9.
@@ -21,20 +24,34 @@ public class Journal {
     private Long id;
 
     @NotNull
-    private Long journalOwnId;
+    private Long bookId;
 
     @NotNull
     private String name;
 
-    @Generated(hash = 1133720453)
-    public Journal(Long id, @NotNull Long journalOwnId, @NotNull String name) {
-        this.id = id;
-        this.journalOwnId = journalOwnId;
-        this.name = name;
-    }
+    @NotNull
+    private Date createTime;
 
     @Generated(hash = 1562390721)
     public Journal() {
+    }
+
+    @Generated(hash = 384723743)
+    public Journal(Long id, @NotNull Long bookId, @NotNull String name,
+                   @NotNull Date createTime) {
+        this.id = id;
+        this.bookId = bookId;
+        this.name = name;
+        this.createTime = createTime;
+    }
+
+    @Keep
+    public Journal(Long id, @NotNull Long bookId, @NotNull String name) {
+        this.id = id;
+        this.bookId = bookId;
+        this.name = name;
+        this.createTime = new Date(System.currentTimeMillis());
+        ;
     }
 
     public Long getId() {
@@ -54,13 +71,6 @@ public class Journal {
         this.name = name;
     }
 
-    public Long getJournalOwnId() {
-        return this.journalOwnId;
-    }
-
-    public void setJournalOwnId(Long journalOwnId) {
-        this.journalOwnId = journalOwnId;
-    }
 
     @Keep
     public String getStringId() {
@@ -79,8 +89,24 @@ public class Journal {
         if (obj == null || getClass() != obj.getClass()) return false;
 
         Journal needCompare = (Journal) obj;
-        return Objects.equal(id, needCompare.id) && Objects.equal(journalOwnId, needCompare.journalOwnId)
+        return Objects.equal(id, needCompare.id) && Objects.equal(bookId, needCompare.bookId)
                 && Objects.equal(name, needCompare.name);
 
+    }
+
+    public Long getBookId() {
+        return this.bookId;
+    }
+
+    public void setBookId(Long bookId) {
+        this.bookId = bookId;
+    }
+
+    public Date getCreateTime() {
+        return this.createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

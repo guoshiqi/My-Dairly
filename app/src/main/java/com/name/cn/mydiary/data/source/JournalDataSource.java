@@ -17,7 +17,7 @@ public interface JournalDataSource {
 
     Observable<List<Journal>> getAllJournals();
 
-    Observable<List<Journal>> getJournals(@NonNull String journalOwnId);
+    Observable<List<Journal>> getJournals(@NonNull String bookId);
 
     Observable<Journal> getJournal(@NonNull String journalId);
 

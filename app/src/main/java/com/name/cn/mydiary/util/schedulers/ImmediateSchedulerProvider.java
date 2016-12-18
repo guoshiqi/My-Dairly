@@ -2,8 +2,6 @@ package com.name.cn.mydiary.util.schedulers;
 
 import android.support.annotation.NonNull;
 
-import com.name.cn.mydiary.util.schedulers.BaseSchedulerProvider;
-
 import rx.Scheduler;
 import rx.schedulers.Schedulers;
 

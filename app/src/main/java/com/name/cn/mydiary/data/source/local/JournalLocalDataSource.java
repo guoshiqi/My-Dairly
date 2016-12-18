@@ -9,7 +9,6 @@ import com.name.cn.mydiary.data.source.JournalDataSource;
 import com.name.cn.mydiary.data.source.local.dao.JournalDao;
 import com.name.cn.mydiary.framework.GreenDaoManager;
 import com.name.cn.mydiary.util.schedulers.BaseSchedulerProvider;
-import com.name.cn.mydiary.util.schedulers.SchedulerProvider;
 
 import org.greenrobot.greendao.annotation.NotNull;
 
@@ -25,6 +24,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 
 public class JournalLocalDataSource implements JournalDataSource {
+
     @Nullable
     private static JournalLocalDataSource INSTANCE;
 
@@ -51,20 +51,18 @@ public class JournalLocalDataSource implements JournalDataSource {
 
     @Override
     public Observable<List<Journal>> getAllJournals() {
-        return Observable.just(dao.loadAll()).subscribeOn(SchedulerProvider.getInstance().io());
+        return Observable.just(dao.loadAll());
     }
 
     @Override
-    public Observable<List<Journal>> getJournals(@NonNull String journalOwnId) {
-
-        GreenDaoManager.getInstance().getmDaoSession().clear();
-        return Observable.from(dao._queryDiary_JournalList(Long.valueOf(journalOwnId))).toList().subscribeOn(SchedulerProvider.getInstance().io());
+    public Observable<List<Journal>> getJournals(@NonNull String bookId) {
+        return Observable.just(dao.queryBuilder().where(JournalDao.Properties.BookId.eq(Long.valueOf(bookId))).orderAsc(JournalDao.Properties.CreateTime).list());
     }
 
     @Override
     public Observable<Journal> getJournal(@NonNull String journalId) {
 
-        return Observable.just(dao.load(Long.valueOf(journalId))).subscribeOn(SchedulerProvider.getInstance().io());
+        return Observable.just(dao.load(Long.valueOf(journalId)));
     }
 
     @Override

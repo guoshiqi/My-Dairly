@@ -33,7 +33,7 @@ ext {
     buildToolsVersion = '24.0.2'
 
     // App dependencies
-    supportLibraryVersion = '25.0.1'
+    supportLibraryVersion = '25.1.0'
     guavaVersion = '18.0'
     junitVersion = '4.12'
     mockitoVersion = '1.10.19'
@@ -46,5 +46,6 @@ ext {
     rxandroidVersion = '1.2.1'
     sqlbriteVersion = '0.7.0'
     rxbusVersion = '1.0.5'
+    awaitilityVersion='2.0.0';
 }
 

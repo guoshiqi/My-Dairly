@@ -1,6 +1,10 @@
 package com.name.cn.mydiary.data;
 
 
+import com.name.cn.mydiary.data.bookdetail.Book;
+import com.name.cn.mydiary.data.source.local.dao.BookDao;
+import com.name.cn.mydiary.data.source.local.dao.BookListDao;
+import com.name.cn.mydiary.data.source.local.dao.DaoSession;
 
 import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Entity;
@@ -9,14 +13,6 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.ToMany;
 
 import java.util.List;
-
-
-import com.name.cn.mydiary.data.bookdetail.Diary;
-import com.name.cn.mydiary.data.bookdetail.Memorandum;
-import com.name.cn.mydiary.data.source.local.dao.DaoSession;
-import com.name.cn.mydiary.data.source.local.dao.DiaryDao;
-import com.name.cn.mydiary.data.source.local.dao.MemorandumDao;
-import com.name.cn.mydiary.data.source.local.dao.BookListDao;
 
 /**
  * 首页包含类型
@@ -29,15 +25,11 @@ public class BookList {
     @Id
     private Long id;
 
-    private Long memorandumOwnerId;
+    private Long bookListId;
 
-    @ToMany(referencedJoinProperty = "memorandumOwnerId")
-    private List<Memorandum> memorandumList;
+    @ToMany(referencedJoinProperty="bookListId")
+    private List<Book> bookList;
 
-    private Long diaryOwnerId;
-
-    @ToMany(referencedJoinProperty = "diaryOwnerId")
-    private List<Diary> diaryList;
 
     /**
      * Used to resolve relations
@@ -51,16 +43,21 @@ public class BookList {
     @Generated(hash = 1203780597)
     private transient BookListDao myDao;
 
-    @Generated(hash = 397993549)
-    public BookList(Long id, Long memorandumOwnerId, Long diaryOwnerId) {
-        this.id = id;
-        this.memorandumOwnerId = memorandumOwnerId;
-        this.diaryOwnerId = diaryOwnerId;
-    }
+
 
     @Generated(hash = 1714324117)
     public BookList() {
     }
+
+
+
+    @Generated(hash = 435315305)
+    public BookList(Long id, Long bookListId) {
+        this.id = id;
+        this.bookListId = bookListId;
+    }
+
+
 
     public Long getId() {
         return this.id;
@@ -71,36 +68,6 @@ public class BookList {
     }
 
 
-    /**
-     * To-many relationship, resolved on first access (and after reset).
-     * Changes to to-many relations are not persisted, make changes to the target entity.
-     */
-    @Generated(hash = 1999649470)
-    public List<Memorandum> getMemorandumList() {
-        if (memorandumList == null) {
-            final DaoSession daoSession = this.daoSession;
-            if (daoSession == null) {
-                throw new DaoException("Entity is detached from DAO context");
-            }
-            MemorandumDao targetDao = daoSession.getMemorandumDao();
-            List<Memorandum> memorandumListNew = targetDao
-                    ._queryBookList_MemorandumList(id);
-            synchronized (this) {
-                if (memorandumList == null) {
-                    memorandumList = memorandumListNew;
-                }
-            }
-        }
-        return memorandumList;
-    }
-
-    /**
-     * Resets a to-many relationship, making the next get call to query for a fresh result.
-     */
-    @Generated(hash = 277136916)
-    public synchronized void resetMemorandumList() {
-        memorandumList = null;
-    }
 
     /**
      * Convenient call for {@link org.greenrobot.greendao.AbstractDao#delete(Object)}.
@@ -138,51 +105,34 @@ public class BookList {
         myDao.update(this);
     }
 
+
+
     /**
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated(hash = 508891475)
-    public List<Diary> getDiaryList() {
-        if (diaryList == null) {
+    @Generated(hash = 1657237779)
+    public List<Book> getBookList() {
+        if (bookList == null) {
             final DaoSession daoSession = this.daoSession;
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
-            DiaryDao targetDao = daoSession.getDiaryDao();
-            List<Diary> diaryListNew = targetDao._queryBookList_DiaryList(id);
+            BookDao targetDao = daoSession.getBookDao();
+            List<Book> bookListNew = targetDao._queryBookList_BookList(id);
             synchronized (this) {
-                if (diaryList == null) {
-                    diaryList = diaryListNew;
+                if (bookList == null) {
+                    bookList = bookListNew;
                 }
             }
         }
-        return diaryList;
+        return bookList;
     }
 
-    /**
-     * Resets a to-many relationship, making the next get call to query for a fresh result.
-     */
-    @Generated(hash = 1078514341)
-    public synchronized void resetDiaryList() {
-        diaryList = null;
-    }
-
-
-    public Long getMemorandumOwnerId() {
-        return this.memorandumOwnerId;
-    }
-
-    public void setMemorandumOwnerId(Long memorandumOwnerId) {
-        this.memorandumOwnerId = memorandumOwnerId;
-    }
-
-    public Long getDiaryOwnerId() {
-        return this.diaryOwnerId;
-    }
-
-    public void setDiaryOwnerId(Long diaryOwnerId) {
-        this.diaryOwnerId = diaryOwnerId;
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    @Generated(hash = 1428566046)
+    public synchronized void resetBookList() {
+        bookList = null;
     }
 
     /** called by internal mechanisms, do not call yourself. */
@@ -190,6 +140,18 @@ public class BookList {
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getBookListDao() : null;
+    }
+
+
+
+    public Long getBookListId() {
+        return this.bookListId;
+    }
+
+
+
+    public void setBookListId(Long bookListId) {
+        this.bookListId = bookListId;
     }
 
 

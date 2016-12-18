@@ -1,6 +1,9 @@
 package com.name.cn.mydiary.data;
 
 
+import com.name.cn.mydiary.data.source.local.dao.BookListDao;
+import com.name.cn.mydiary.data.source.local.dao.DaoSession;
+import com.name.cn.mydiary.data.source.local.dao.UserDao;
 
 import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Entity;
@@ -10,10 +13,6 @@ import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.ToOne;
 
 import java.util.Date;
-import com.name.cn.mydiary.data.source.local.dao.DaoSession;
-import com.name.cn.mydiary.data.source.local.dao.BookListDao;
-import com.name.cn.mydiary.data.source.local.dao.UserDao;
-
 
 
 /**

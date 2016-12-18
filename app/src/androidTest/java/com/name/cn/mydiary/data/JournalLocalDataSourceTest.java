@@ -8,7 +8,6 @@ import com.name.cn.mydiary.data.bookdetail.Journal;
 import com.name.cn.mydiary.data.source.local.JournalLocalDataSource;
 import com.name.cn.mydiary.util.schedulers.BaseSchedulerProvider;
 import com.name.cn.mydiary.util.schedulers.ImmediateSchedulerProvider;
-import com.name.cn.mydiary.util.schedulers.SchedulerProvider;
 
 import org.junit.After;
 import org.junit.Before;
@@ -21,6 +20,7 @@ import rx.observers.TestSubscriber;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
@@ -69,14 +69,9 @@ public class JournalLocalDataSourceTest {
         mLocalDataSource.saveJournal(newJournal);
 
         // Then the task can be retrieved from the persistent repository
-        TestSubscriber<Journal> testSubscriber = new TestSubscriber<Journal>() {
-            @Override
-            public void onNext(Journal journal) {
-                assertValue(newJournal);
-            }
-        };
-        mLocalDataSource.getJournal(newJournal.getStringId()).observeOn(SchedulerProvider.getInstance().ui()).subscribe(testSubscriber);
-
+        TestSubscriber<Journal> testSubscriber = new TestSubscriber<Journal>();
+        mLocalDataSource.getJournal(newJournal.getStringId()).subscribe(testSubscriber);
+        testSubscriber.assertValues(newJournal);
     }
 
     @Test
@@ -90,13 +85,10 @@ public class JournalLocalDataSourceTest {
         mLocalDataSource.deleteAllJournals();
 
         // Then the retrieved tasks is an empty list
-        TestSubscriber<List<Journal>> testSubscriber = new TestSubscriber<List<Journal>>() {
-            @Override
-            public void onNext(List<Journal> journals) {
-                assertThat(journals.isEmpty(), is(true));
-            }
-        };
-        mLocalDataSource.getAllJournals().observeOn(SchedulerProvider.getInstance().ui()).subscribe(testSubscriber);
+        TestSubscriber<List<Journal>> testSubscriber = new TestSubscriber<List<Journal>>();
+        mLocalDataSource.getAllJournals().subscribe(testSubscriber);
+        List<Journal> result = testSubscriber.getOnNextEvents().get(0);
+        assertThat(result.isEmpty(), is(true));
 
     }
 
@@ -110,13 +102,10 @@ public class JournalLocalDataSourceTest {
 
 
         // Then the tasks can be retrieved from the persistent repository
-        TestSubscriber<List<Journal>> testSubscriber = new TestSubscriber<List<Journal>>() {
-            @Override
-            public void onNext(List<Journal> journals) {
-                assertThat(journals, hasItems(newJournal1, newJournal2));
-            }
-        };
-        mLocalDataSource.getAllJournals().observeOn(SchedulerProvider.getInstance().ui()).subscribe(testSubscriber);
+        TestSubscriber<List<Journal>> testSubscriber = new TestSubscriber<List<Journal>>();
+        mLocalDataSource.getAllJournals().subscribe(testSubscriber);
+        List<Journal> result = testSubscriber.getOnNextEvents().get(0);
+        assertThat(result, hasItems(newJournal1, newJournal2));
 
     }
 
@@ -124,13 +113,9 @@ public class JournalLocalDataSourceTest {
     public void getTask_whenTaskNotSaved() {
         //Given that no task has been saved
         //When querying for a task, null is returned.
-        TestSubscriber<Journal> testSubscriber = new TestSubscriber<Journal>() {
-            @Override
-            public void onNext(Journal journal) {
-                assertValue(null);
-            }
-        };
-        mLocalDataSource.getJournal("1").observeOn(SchedulerProvider.getInstance().ui()).subscribe(testSubscriber);
+        TestSubscriber<Journal> testSubscriber = new TestSubscriber<Journal>();
+        mLocalDataSource.getJournal("1").subscribe(testSubscriber);
+        testSubscriber.assertValue(null);
     }
 
     @Test
@@ -145,13 +130,11 @@ public class JournalLocalDataSourceTest {
 
 
         //获取其中一种bookid的list
-        TestSubscriber<List<Journal>> testSubscriber = new TestSubscriber<List<Journal>>() {
-            @Override
-            public void onNext(List<Journal> list) {
-                assertThat(list, hasItems(newJournal2, newJournal3));
-            }
-        };
-        mLocalDataSource.getJournals("2").observeOn(SchedulerProvider.getInstance().ui()).subscribe(testSubscriber);
-
+        TestSubscriber<List<Journal>> testSubscriber = new TestSubscriber<List<Journal>>();
+        mLocalDataSource.getJournals("2").subscribe(testSubscriber);
+        testSubscriber.assertCompleted();
+        testSubscriber.assertNoErrors();
+        List<Journal> result = testSubscriber.getOnNextEvents().get(0);
+        assertThat(result, not(hasItems(newJournal1)));
     }
 }

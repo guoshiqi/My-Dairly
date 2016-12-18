@@ -16,20 +16,23 @@ public class MemorandumItem {
     @Id
     private Long id;
 
-    private Long memorandumItemOwnId;
+    @NotNull
+    private Long bookId;
 
     @NotNull
     private String name;
 
-    @Generated(hash = 2049789004)
-    public MemorandumItem(Long id, Long memorandumItemOwnId, @NotNull String name) {
-        this.id = id;
-        this.memorandumItemOwnId = memorandumItemOwnId;
-        this.name = name;
-    }
+
 
     @Generated(hash = 16864648)
     public MemorandumItem() {
+    }
+
+    @Generated(hash = 1814057740)
+    public MemorandumItem(Long id, @NotNull Long bookId, @NotNull String name) {
+        this.id = id;
+        this.bookId = bookId;
+        this.name = name;
     }
 
     public Long getId() {
@@ -49,12 +52,14 @@ public class MemorandumItem {
         this.name = name;
     }
 
-    public Long getMemorandumItemOwnId() {
-        return this.memorandumItemOwnId;
+    public Long getBookId() {
+        return this.bookId;
     }
 
-    public void setMemorandumItemOwnId(Long memorandumItemOwnId) {
-        this.memorandumItemOwnId = memorandumItemOwnId;
+    public void setBookId(Long bookId) {
+        this.bookId = bookId;
     }
+
+
 
 }

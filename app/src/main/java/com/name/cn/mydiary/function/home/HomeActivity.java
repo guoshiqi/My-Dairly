@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 
-import com.name.cn.mydiary.Injection;
 import com.name.cn.mydiary.R;
 import com.name.cn.mydiary.framework.BaseActivity;
 import com.name.cn.mydiary.util.ActivityUtils;

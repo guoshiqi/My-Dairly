@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 
 import com.name.cn.mydiary.data.bookdetail.Journal;
-import com.name.cn.mydiary.data.source.local.JournalLocalDataSource;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -31,8 +30,9 @@ public class JournalsRepository implements JournalDataSource {
     private final JournalDataSource mJournalLocalDataSource;
 
     //cache
+    @VisibleForTesting
     @Nullable
-    private Map<String, Map<String, Journal>> mCachedJournals;
+    Map<String, Map<String, Journal>> mCachedJournals;
 
     /**
      * Marks the cache as invalid, to force an update the next time data is requested. This variable
@@ -87,13 +87,13 @@ public class JournalsRepository implements JournalDataSource {
     }
 
     @Override
-    public Observable<List<Journal>> getJournals(@NonNull String journalOwnId) {
-        checkNotNull(journalOwnId);
+    public Observable<List<Journal>> getJournals(@NonNull String bookId) {
+        checkNotNull(bookId);
 
         if (mCachedJournals != null) {
-            return Observable.from(mCachedJournals.get(journalOwnId).values()).toList();
+            return Observable.from(mCachedJournals.get(bookId).values()).toList();
         }
-        return getJournalWithOwnDiaryIdFromLocalRepository(journalOwnId);
+        return getJournalWithOwnDiaryIdFromLocalRepository(bookId);
     }
 
     @Override
@@ -129,6 +129,9 @@ public class JournalsRepository implements JournalDataSource {
         if (mCachedJournals == null) {
             mCachedJournals = new LinkedHashMap<>();
         }
+        if (mCachedJournals.get(journal.getStringJournalOwnId())==null){
+            mCachedJournals.put(journal.getStringJournalOwnId(),new LinkedHashMap<>());
+        }
         mCachedJournals.get(journal.getStringJournalOwnId()).put(journal.getStringId(), journal);
     }
 
@@ -150,8 +153,8 @@ public class JournalsRepository implements JournalDataSource {
     @Override
     public void deleteJournal(@NonNull String journalId) {
         mJournalLocalDataSource.deleteJournal(checkNotNull(journalId));
-
-        mCachedJournals.remove(journalId);
+        Journal journal=getJournalWithId(journalId);
+        mCachedJournals.get(journal.getStringJournalOwnId()).remove(journalId);
     }
 
     private Observable<List<Journal>> getAndCacheLocalJournals() {

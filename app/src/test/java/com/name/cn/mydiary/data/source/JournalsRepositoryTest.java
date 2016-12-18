@@ -17,6 +17,8 @@ import java.util.List;
 import rx.Observable;
 import rx.observers.TestSubscriber;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,14 +36,16 @@ public class JournalsRepositoryTest {
 
     private final static String JOURNAL_TITLE3 = "title3";
 
-    private static List<Journal> JOURNALS = Lists.newArrayList(new Journal(1L, 2L,"as"),
-            new Journal(2L, 2L,"asd"));
+    private static List<Journal> JOURNALS = Lists.newArrayList(new Journal(1L, 2L, "as"),
+            new Journal(2L, 2L, "asd"));
+
+    private static List<Journal> JOURNALSD = Lists.newArrayList(new Journal(2L, 2L, "asd"));
 
     private TestSubscriber<List<Journal>> mJournalsTestSubscriber;
 
     private JournalsRepository mJournalsRepository;
     @Mock
-    private JournalDataSource mTasksLocalDataSource;
+    private JournalDataSource mJournalsLocalDataSource;
 
     @Mock
     private Context mContext;
@@ -53,7 +57,7 @@ public class JournalsRepositoryTest {
         MockitoAnnotations.initMocks(this);
 
         // Get a reference to the class under test
-        mJournalsRepository = JournalsRepository.getInstance(mTasksLocalDataSource);
+        mJournalsRepository = JournalsRepository.getInstance(mJournalsLocalDataSource);
 
         mJournalsTestSubscriber = new TestSubscriber<>();
     }
@@ -67,14 +71,31 @@ public class JournalsRepositoryTest {
     @Test
     public void getTasks_requestsAllTasksFromLocalDataSource() {
         // Given that the local data source has data available
-        setJournalsAvailable(mTasksLocalDataSource, JOURNALS);
+        setJournalsAvailable(mJournalsLocalDataSource, JOURNALS);
 
         // When tasks are requested from the tasks repository
         mJournalsRepository.getAllJournals().subscribe(mJournalsTestSubscriber);
 
         // Then tasks are loaded from the local data source
-        verify(mTasksLocalDataSource).getAllJournals();
+        verify(mJournalsLocalDataSource).getAllJournals();
         mJournalsTestSubscriber.assertValue(JOURNALS);
+    }
+
+    @Test
+    public void deleteJournal() {
+        //save two;
+        Journal newJournal1 = new Journal(1L, 2L, "as");
+        Journal newJournal2 = new Journal(2L, 2L, "asd");
+        mJournalsRepository.saveJournal(newJournal1);
+        mJournalsRepository.saveJournal(newJournal2);
+
+        //delete one
+        mJournalsRepository.deleteJournal("2");
+
+        //verify
+        verify(mJournalsLocalDataSource).deleteJournal("2");
+
+        assertThat(mJournalsRepository.mCachedJournals.get("2").size(),is(0) );
     }
 
     private void setJournalsNotAvailable(JournalDataSource dataSource) {
