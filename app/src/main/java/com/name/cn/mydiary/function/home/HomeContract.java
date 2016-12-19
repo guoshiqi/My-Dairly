@@ -1,5 +1,6 @@
 package com.name.cn.mydiary.function.home;
 
+import com.name.cn.mydiary.data.bookdetail.Book;
 import com.name.cn.mydiary.framework.BasePresenter;
 import com.name.cn.mydiary.framework.BaseView;
 
@@ -24,7 +25,12 @@ public interface HomeContract {
 
     interface Presenter extends BasePresenter {
 
-        void saveBook(String title, String description);
+        void result(int requestCode, int resultCode);
 
+        void saveBook(Book book);
+
+        void setFiltering(HomeFilterType requestType);
+
+        void loadBooks(boolean forceUpdate);
     }
 }

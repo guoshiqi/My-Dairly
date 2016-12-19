@@ -2,6 +2,7 @@ package com.name.cn.mydiary.function.home;
 
 import android.support.annotation.NonNull;
 
+import com.name.cn.mydiary.data.bookdetail.Book;
 import com.name.cn.mydiary.data.source.BookDataSource;
 import com.name.cn.mydiary.util.schedulers.BaseSchedulerProvider;
 
@@ -55,11 +56,22 @@ public class HomePresenter implements HomeContract.Presenter {
 
 
     @Override
-    public void saveBook(String title, String description) {
+    public void result(int requestCode, int resultCode) {
 
     }
 
-    private void loadBooks(boolean forceUpdate){
+    @Override
+    public void saveBook(Book book) {
+
+    }
+
+    @Override
+    public void setFiltering(HomeFilterType requestType) {
+
+    }
+
+    @Override
+    public void loadBooks(boolean forceUpdate){
 
     }
 }

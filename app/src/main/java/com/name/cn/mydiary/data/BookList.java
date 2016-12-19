@@ -2,7 +2,6 @@ package com.name.cn.mydiary.data;
 
 
 import com.name.cn.mydiary.data.bookdetail.Book;
-import com.name.cn.mydiary.data.source.local.dao.BookDao;
 import com.name.cn.mydiary.data.source.local.dao.BookListDao;
 import com.name.cn.mydiary.data.source.local.dao.DaoSession;
 
@@ -13,6 +12,7 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.ToMany;
 
 import java.util.List;
+import com.name.cn.mydiary.data.source.local.dao.BookDao;
 
 /**
  * 首页包含类型
@@ -107,27 +107,7 @@ public class BookList {
 
 
 
-    /**
-     * To-many relationship, resolved on first access (and after reset).
-     * Changes to to-many relations are not persisted, make changes to the target entity.
-     */
-    @Generated(hash = 1657237779)
-    public List<Book> getBookList() {
-        if (bookList == null) {
-            final DaoSession daoSession = this.daoSession;
-            if (daoSession == null) {
-                throw new DaoException("Entity is detached from DAO context");
-            }
-            BookDao targetDao = daoSession.getBookDao();
-            List<Book> bookListNew = targetDao._queryBookList_BookList(id);
-            synchronized (this) {
-                if (bookList == null) {
-                    bookList = bookListNew;
-                }
-            }
-        }
-        return bookList;
-    }
+
 
     /** Resets a to-many relationship, making the next get call to query for a fresh result. */
     @Generated(hash = 1428566046)
@@ -152,6 +132,30 @@ public class BookList {
 
     public void setBookListId(Long bookListId) {
         this.bookListId = bookListId;
+    }
+
+
+
+    /**
+     * To-many relationship, resolved on first access (and after reset).
+     * Changes to to-many relations are not persisted, make changes to the target entity.
+     */
+    @Generated(hash = 1657237779)
+    public List<Book> getBookList() {
+        if (bookList == null) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            BookDao targetDao = daoSession.getBookDao();
+            List<Book> bookListNew = targetDao._queryBookList_BookList(id);
+            synchronized (this) {
+                if (bookList == null) {
+                    bookList = bookListNew;
+                }
+            }
+        }
+        return bookList;
     }
 
 

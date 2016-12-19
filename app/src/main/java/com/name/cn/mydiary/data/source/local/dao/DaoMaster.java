@@ -6,9 +6,9 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.util.Log;
 
 import org.greenrobot.greendao.AbstractDaoMaster;
+import org.greenrobot.greendao.database.StandardDatabase;
 import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.database.DatabaseOpenHelper;
-import org.greenrobot.greendao.database.StandardDatabase;
 import org.greenrobot.greendao.identityscope.IdentityScopeType;
 
 
@@ -21,8 +21,8 @@ public class DaoMaster extends AbstractDaoMaster {
 
     /** Creates underlying database table using DAOs. */
     public static void createAllTables(Database db, boolean ifNotExists) {
-        UserDao.createTable(db, ifNotExists);
         MemorandumItemDao.createTable(db, ifNotExists);
+        UserDao.createTable(db, ifNotExists);
         JournalDao.createTable(db, ifNotExists);
         BookListDao.createTable(db, ifNotExists);
         BookDao.createTable(db, ifNotExists);
@@ -30,8 +30,8 @@ public class DaoMaster extends AbstractDaoMaster {
 
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(Database db, boolean ifExists) {
-        UserDao.dropTable(db, ifExists);
         MemorandumItemDao.dropTable(db, ifExists);
+        UserDao.dropTable(db, ifExists);
         JournalDao.dropTable(db, ifExists);
         BookListDao.dropTable(db, ifExists);
         BookDao.dropTable(db, ifExists);
@@ -53,8 +53,8 @@ public class DaoMaster extends AbstractDaoMaster {
 
     public DaoMaster(Database db) {
         super(db, SCHEMA_VERSION);
-        registerDaoClass(UserDao.class);
         registerDaoClass(MemorandumItemDao.class);
+        registerDaoClass(UserDao.class);
         registerDaoClass(JournalDao.class);
         registerDaoClass(BookListDao.class);
         registerDaoClass(BookDao.class);

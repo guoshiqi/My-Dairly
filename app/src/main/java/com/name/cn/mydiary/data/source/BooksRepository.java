@@ -6,7 +6,6 @@ import android.support.annotation.VisibleForTesting;
 
 import com.name.cn.mydiary.data.bookdetail.Book;
 
-import org.greenrobot.greendao.annotation.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +18,7 @@ import rx.Observable;
 import rx.functions.Func1;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+
 
 /**
  * book缓存
@@ -72,6 +72,7 @@ public class BooksRepository implements BookDataSource {
 
     @Override
     public Observable<List<Book>> getAllBooks(Long bookListId) {
+        checkNotNull(bookListId);
         if (cacheMap != null && !mCacheIsDirty) {
             List<Book> list = new ArrayList<>();
             Iterator<Map.Entry<Long, Book>> it = cacheMap.entrySet().iterator();
@@ -92,7 +93,7 @@ public class BooksRepository implements BookDataSource {
     }
 
     @Override
-    public Observable<Book> getBook(Long id) {
+    public Observable<Book> getBook(@NonNull Long id) {
         checkNotNull(id);
         if (cacheMap != null) {
             return Observable.just(cacheMap.get(id));
@@ -124,6 +125,7 @@ public class BooksRepository implements BookDataSource {
 
     @Override
     public void deleteBooks(Long bookListId) {
+        checkNotNull(bookListId);
         mBookLocalDataSource.deleteBooks(bookListId);
 
         if (cacheMap == null) {
@@ -151,7 +153,7 @@ public class BooksRepository implements BookDataSource {
     }
 
     @NonNull
-    private Observable<Book> getBookWithIdFromLocalRepository(@NotNull final Long bookId) {
+    private Observable<Book> getBookWithIdFromLocalRepository(@NonNull final Long bookId) {
         return mBookLocalDataSource
                 .getBook(bookId)
                 .doOnNext(book -> cacheMap.put(bookId, book))

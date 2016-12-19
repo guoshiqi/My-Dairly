@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 
+import com.name.cn.mydiary.Injection;
 import com.name.cn.mydiary.R;
 import com.name.cn.mydiary.framework.BaseActivity;
 import com.name.cn.mydiary.util.ActivityUtils;
 
 public class HomeActivity extends BaseActivity {
+    private static final String CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY";
 
     private HomePresenter mHomePresenter;
 
@@ -33,17 +35,17 @@ public class HomeActivity extends BaseActivity {
         }
 
         // Create the presenter
-//        mHomePresenter = new HomePresenter(
-//                Injection.provideTasksRepository(Injection.provideTasksRepository(getApplicationContext())),
-//                homeFragment,
-//                Injection.provideSchedulerProvider());
+        mHomePresenter = new HomePresenter(
+                Injection.provideBooksRepository(getApplicationContext()),
+                homeFragment,
+                Injection.provideSchedulerProvider());
 
-//        // Load previously saved state, if available.
-//        if (savedInstanceState != null) {
-//            TasksFilterType currentFiltering =
-//                    (TasksFilterType) savedInstanceState.getSerializable(CURRENT_FILTERING_KEY);
-//            mTasksPresenter.setFiltering(currentFiltering);
-//        }
+        // Load previously saved state, if available.
+        if (savedInstanceState != null) {
+            HomeFilterType currentFiltering =
+                    (HomeFilterType) savedInstanceState.getSerializable(CURRENT_FILTERING_KEY);
+            mHomePresenter.setFiltering(currentFiltering);
+        }
 
     }
 }
