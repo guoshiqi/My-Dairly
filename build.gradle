@@ -17,6 +17,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven { url "https://jitpack.io" }
     }
 }
 
@@ -47,5 +48,6 @@ ext {
     sqlbriteVersion = '0.7.0'
     rxbusVersion = '1.0.5'
     awaitilityVersion='2.0.0';
+    baseRecyAdapterVersion='2.6.6';
 }
 

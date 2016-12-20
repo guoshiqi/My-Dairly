@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.name.cn.mydiary.R;
 import com.name.cn.mydiary.data.bookdetail.Book;
 import com.name.cn.mydiary.widget.ScrollChildSwipeRefreshLayout;
@@ -48,7 +50,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBooksAdapter = new BooksAdapter(new ArrayList<>(0), mItemListener);
+        mBooksAdapter = new BooksAdapter(R.layout.item_home_books_layout, new ArrayList<>());
     }
 
     @Override
@@ -112,33 +114,19 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
     }
 
-    private static class BooksAdapter extends RecyclerView.Adapter {
-        private List<Book> mBooks;
-        private BookItemListener mItemListener;
+    private static class BooksAdapter extends BaseQuickAdapter<Book, BaseViewHolder> {
 
-        public BooksAdapter(List<Book> books, BookItemListener itemListener) {
-            setList(books);
-            mItemListener = itemListener;
+        public BooksAdapter(int layoutResId, List<Book> data) {
+            super(layoutResId, data);
+        }
+
+        public BooksAdapter(List<Book> data) {
+            super(data);
         }
 
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return null;
-        }
+        protected void convert(BaseViewHolder baseViewHolder, Book book) {
 
-        @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
-        }
-
-
-        @Override
-        public int getItemCount() {
-            return 0;
-        }
-
-        public void setList(List<Book> books) {
-            mBooks = checkNotNull(books);
         }
     }
 
