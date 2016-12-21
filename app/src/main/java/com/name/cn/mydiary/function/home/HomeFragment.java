@@ -1,11 +1,15 @@
 package com.name.cn.mydiary.function.home;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -86,6 +90,13 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(mBooksAdapter);
 
+        // Set up floating action button
+        FloatingActionButton fab =
+                (FloatingActionButton) getActivity().findViewById(R.id.fab_add_book);
+
+        fab.setImageResource(R.drawable.ic_add);
+        fab.setOnClickListener(__ -> mPresenter.addNewBook());
+
         // Set up  no tasks view
 
         // Set up progress indicator
@@ -109,9 +120,39 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
     }
 
-    @Override
-    public void showBooksList() {
 
+    @Override
+    public void showAddBookView() {
+        CustomDialogInputView inputView = new CustomDialogInputView(getContext());
+        new AlertDialog.Builder(getContext()).setTitle(R.string.dialog_title).setView(inputView)
+                .setPositiveButton(R.string.dialog_positive, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mPresenter.saveBook(inputView.getInput());
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(R.string.dialog_negative, null)
+                .create().show();
+    }
+
+    @Override
+    public void setLoadingIndicator(boolean active) {
+        if (getView() == null) {
+            return;
+        }
+        final SwipeRefreshLayout srl =
+                (SwipeRefreshLayout) getView().findViewById(R.id.refresh_layout);
+
+        // Make sure setRefreshing() is called after the layout is done with everything else.
+        srl.post(() -> srl.setRefreshing(active));
+    }
+
+    @Override
+    public void showBooks(List<Book> books) {
+        mBooksAdapter.setNewData(books);
+
+        //TODO 需要改变列表状态
     }
 
     private static class BooksAdapter extends BaseQuickAdapter<Book, BaseViewHolder> {
@@ -126,7 +167,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
         @Override
         protected void convert(BaseViewHolder baseViewHolder, Book book) {
-
+            baseViewHolder.setText(R.id.image_title, book.getTitle());
         }
     }
 

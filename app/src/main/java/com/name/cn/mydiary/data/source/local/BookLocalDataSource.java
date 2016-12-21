@@ -11,6 +11,7 @@ import com.name.cn.mydiary.framework.GreenDaoManager;
 import com.name.cn.mydiary.util.schedulers.BaseSchedulerProvider;
 
 import org.greenrobot.greendao.annotation.NotNull;
+import org.greenrobot.greendao.query.DeleteQuery;
 
 import java.util.List;
 
@@ -78,6 +79,7 @@ public class BookLocalDataSource implements BookDataSource {
 
     @Override
     public void deleteBooks(Long bookListId) {
-        dao.queryBuilder().where(BookDao.Properties.BookListId.eq(bookListId)).buildDelete();
+        DeleteQuery<Book> bookDeleteQuery=dao.queryBuilder().where(BookDao.Properties.BookListId.eq(bookListId)).buildDelete();
+        bookDeleteQuery.executeDeleteWithoutDetachingEntities();
     }
 }

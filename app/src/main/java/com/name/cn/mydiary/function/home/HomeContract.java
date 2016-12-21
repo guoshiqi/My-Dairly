@@ -4,6 +4,8 @@ import com.name.cn.mydiary.data.bookdetail.Book;
 import com.name.cn.mydiary.framework.BasePresenter;
 import com.name.cn.mydiary.framework.BaseView;
 
+import java.util.List;
+
 /**
  * This specifies the contract between the view and the presenter.
  * 约定
@@ -16,18 +18,20 @@ public interface HomeContract {
 
         void showEmptyDiaryError();
 
-        void showBooksList();
+        void showAddBookView();
 
+        void setLoadingIndicator(boolean active);
 
-
-
+        void showBooks(List<Book> books);
     }
 
     interface Presenter extends BasePresenter {
 
         void result(int requestCode, int resultCode);
 
-        void saveBook(Book book);
+        void addNewBook();
+
+        void saveBook(String title);
 
         void setFiltering(HomeFilterType requestType);
 

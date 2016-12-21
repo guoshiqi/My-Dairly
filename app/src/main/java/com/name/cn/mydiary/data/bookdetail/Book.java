@@ -1,6 +1,7 @@
 package com.name.cn.mydiary.data.bookdetail;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
@@ -99,6 +100,11 @@ public class Book {
         return Objects.equal(id, needCompare.id) && Objects.equal(bookListId, needCompare.bookListId)
                 && Objects.equal(type, needCompare.type)&& Objects.equal(title, needCompare.title)
                 && Objects.equal(desc, needCompare.desc);
+    }
+
+    @Keep
+    public boolean isEmpty() {
+        return Strings.isNullOrEmpty(title);
     }
 
 
