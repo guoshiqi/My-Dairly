@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import com.name.cn.mydiary.data.bookdetail.Journal;
 import com.name.cn.mydiary.data.source.JournalDataSource;
 import com.name.cn.mydiary.data.source.local.dao.JournalDao;
-import com.name.cn.mydiary.framework.GreenDaoManager;
+import com.name.cn.mydiary.util.database.GreenDaoManager;
 import com.name.cn.mydiary.util.schedulers.BaseSchedulerProvider;
 
 import org.greenrobot.greendao.annotation.NotNull;

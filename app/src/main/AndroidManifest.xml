@@ -10,14 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".function.home.HomeActivity"
-            android:theme="@style/AppTheme.OverlapSystemBar">
+            android:name=".function.splash.SplashActivity"
+            android:theme="@style/AppTheme.NoTitle_FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".function.home.HomeActivity"
+            android:theme="@style/AppTheme.OverlapSystemBar" />
     </application>
 
 </manifest>

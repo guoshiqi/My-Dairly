@@ -4,6 +4,9 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 
+import com.name.cn.mydiary.util.database.GreenDaoManager;
+import com.squareup.leakcanary.LeakCanary;
+
 import java.util.List;
 
 
@@ -22,14 +25,20 @@ public class DiaryApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
+        // Normal app init code...
         String processName = getProcessName(this);
         if (processName!= null) {
-            if(processName.equals("com.name.cn.mydairly")){
+            if(processName.equals("com.name.cn.mydairly.mock")){
                 //初始化com.name.cn.mydairly以包名为进程名，项目默认的进程
                 initApp();
             }
         }
-
     }
 
     private void initApp() {

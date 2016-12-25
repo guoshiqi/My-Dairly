@@ -89,6 +89,10 @@ dependencies {
     compile "com.hwangjr.rxbus:rxbus:$rootProject.rxbusVersion"
     compile "com.github.CymChad:BaseRecyclerViewAdapterHelper:$rootProject.baseRecyAdapterVersion"
 
+    debugCompile "com.squareup.leakcanary:leakcanary-android:$rootProject.leakcanaryVersion"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.leakcanaryVersion"
+    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.leakcanaryVersion"
+
     // Dependencies for local unit tests
     testCompile "junit:junit:$rootProject.ext.junitVersion"
     testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"

@@ -49,5 +49,6 @@ ext {
     rxbusVersion = '1.0.5'
     awaitilityVersion='2.0.0';
     baseRecyAdapterVersion='2.6.6';
+    leakcanaryVersion='1.5';
 }
 
