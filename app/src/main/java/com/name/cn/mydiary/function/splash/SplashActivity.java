@@ -31,11 +31,11 @@ public class SplashActivity extends BaseActivity{
                     getSupportFragmentManager(), splashFragment, R.id.splash_fragment);
         }
 
-//        // Create the presenter
-//        mSplashPresenter = new SplashPresenter(
-//                Injection.provideBooksRepository(getApplicationContext()),
-//                splashFragment,
-//                Injection.provideSchedulerProvider());
+        // Create the presenter
+        mSplashPresenter = new SplashPresenter(
+                Injection.provideUserRepository(getApplicationContext()),
+                splashFragment,
+                Injection.provideSchedulerProvider());
 
     }
 }

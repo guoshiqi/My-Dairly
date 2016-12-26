@@ -1,6 +1,7 @@
 package com.name.cn.mydiary.data.bookdetail;
 
 import com.google.common.base.Objects;
+import com.name.cn.mydiary.util.DateUtils;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
@@ -50,8 +51,7 @@ public class Journal {
         this.id = id;
         this.bookId = bookId;
         this.name = name;
-        this.createTime = new Date(System.currentTimeMillis());
-        ;
+        this.createTime = DateUtils.getNowTime();
     }
 
     public Long getId() {

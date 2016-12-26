@@ -34,7 +34,7 @@ public class DiaryApplication extends Application {
         // Normal app init code...
         String processName = getProcessName(this);
         if (processName!= null) {
-            if(processName.equals("com.name.cn.mydairly.mock")){
+            if(processName.equals("com.name.cn.mydiary.mock")){
                 //初始化com.name.cn.mydairly以包名为进程名，项目默认的进程
                 initApp();
             }

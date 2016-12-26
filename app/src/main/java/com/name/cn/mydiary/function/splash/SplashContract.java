@@ -1,5 +1,6 @@
 package com.name.cn.mydiary.function.splash;
 
+import com.name.cn.mydiary.data.User;
 import com.name.cn.mydiary.framework.BasePresenter;
 import com.name.cn.mydiary.framework.BaseView;
 

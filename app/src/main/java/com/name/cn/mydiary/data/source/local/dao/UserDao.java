@@ -13,6 +13,7 @@ import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.database.DatabaseStatement;
 
 import com.name.cn.mydiary.data.BookList;
+import com.name.cn.mydiary.data.Config;
 
 import com.name.cn.mydiary.data.User;
 
@@ -32,6 +33,7 @@ public class UserDao extends AbstractDao<User, Long> {
         public final static Property Id = new Property(0, Long.class, "Id", true, "_id");
         public final static Property Date = new Property(1, java.util.Date.class, "date", false, "DATE");
         public final static Property BookListId = new Property(2, Long.class, "bookListId", false, "BOOK_LIST_ID");
+        public final static Property ConfigId = new Property(3, Long.class, "configId", false, "CONFIG_ID");
     }
 
     private DaoSession daoSession;
@@ -52,7 +54,8 @@ public class UserDao extends AbstractDao<User, Long> {
         db.execSQL("CREATE TABLE " + constraint + "\"USER\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: Id
                 "\"DATE\" INTEGER NOT NULL ," + // 1: date
-                "\"BOOK_LIST_ID\" INTEGER);"); // 2: bookListId
+                "\"BOOK_LIST_ID\" INTEGER," + // 2: bookListId
+                "\"CONFIG_ID\" INTEGER);"); // 3: configId
     }
 
     /** Drops the underlying database table. */
@@ -75,6 +78,11 @@ public class UserDao extends AbstractDao<User, Long> {
         if (bookListId != null) {
             stmt.bindLong(3, bookListId);
         }
+ 
+        Long configId = entity.getConfigId();
+        if (configId != null) {
+            stmt.bindLong(4, configId);
+        }
     }
 
     @Override
@@ -90,6 +98,11 @@ public class UserDao extends AbstractDao<User, Long> {
         Long bookListId = entity.getBookListId();
         if (bookListId != null) {
             stmt.bindLong(3, bookListId);
+        }
+ 
+        Long configId = entity.getConfigId();
+        if (configId != null) {
+            stmt.bindLong(4, configId);
         }
     }
 
@@ -109,7 +122,8 @@ public class UserDao extends AbstractDao<User, Long> {
         User entity = new User( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // Id
             new java.util.Date(cursor.getLong(offset + 1)), // date
-            cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2) // bookListId
+            cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2), // bookListId
+            cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3) // configId
         );
         return entity;
     }
@@ -119,6 +133,7 @@ public class UserDao extends AbstractDao<User, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setDate(new java.util.Date(cursor.getLong(offset + 1)));
         entity.setBookListId(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
+        entity.setConfigId(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
      }
     
     @Override
@@ -154,8 +169,11 @@ public class UserDao extends AbstractDao<User, Long> {
             SqlUtils.appendColumns(builder, "T", getAllColumns());
             builder.append(',');
             SqlUtils.appendColumns(builder, "T0", daoSession.getBookListDao().getAllColumns());
+            builder.append(',');
+            SqlUtils.appendColumns(builder, "T1", daoSession.getConfigDao().getAllColumns());
             builder.append(" FROM USER T");
             builder.append(" LEFT JOIN BOOK_LIST T0 ON T.\"BOOK_LIST_ID\"=T0.\"_id\"");
+            builder.append(" LEFT JOIN CONFIG T1 ON T.\"CONFIG_ID\"=T1.\"_id\"");
             builder.append(' ');
             selectDeep = builder.toString();
         }
@@ -168,6 +186,10 @@ public class UserDao extends AbstractDao<User, Long> {
 
         BookList bookList = loadCurrentOther(daoSession.getBookListDao(), cursor, offset);
         entity.setBookList(bookList);
+        offset += daoSession.getBookListDao().getAllColumns().length;
+
+        Config config = loadCurrentOther(daoSession.getConfigDao(), cursor, offset);
+        entity.setConfig(config);
 
         return entity;    
     }

@@ -22,8 +22,10 @@ import android.support.annotation.NonNull;
 import com.name.cn.mydiary.data.source.BooksRepository;
 import com.name.cn.mydiary.data.source.JournalDataSource;
 import com.name.cn.mydiary.data.source.JournalsRepository;
+import com.name.cn.mydiary.data.source.UserRepository;
 import com.name.cn.mydiary.data.source.local.BookLocalDataSource;
 import com.name.cn.mydiary.data.source.local.JournalLocalDataSource;
+import com.name.cn.mydiary.data.source.local.UserLocalDataSource;
 import com.name.cn.mydiary.util.schedulers.BaseSchedulerProvider;
 import com.name.cn.mydiary.util.schedulers.SchedulerProvider;
 
@@ -48,6 +50,11 @@ public class Injection {
     public static BooksRepository provideBooksRepository(@NonNull Context context) {
         checkNotNull(context);
         return BooksRepository.getInstance(BookLocalDataSource.getInstance(context, provideSchedulerProvider()));
+    }
+
+    public static UserRepository provideUserRepository(@NonNull Context context) {
+        checkNotNull(context);
+        return UserRepository.getInstance(UserLocalDataSource.getInstance(context, provideSchedulerProvider()));
     }
 
 }

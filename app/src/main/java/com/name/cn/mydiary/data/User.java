@@ -1,14 +1,18 @@
 package com.name.cn.mydiary.data;
 
 
+import com.google.common.base.Objects;
 import com.name.cn.mydiary.data.source.local.dao.BookListDao;
+import com.name.cn.mydiary.data.source.local.dao.ConfigDao;
 import com.name.cn.mydiary.data.source.local.dao.DaoSession;
 import com.name.cn.mydiary.data.source.local.dao.UserDao;
+import com.name.cn.mydiary.util.DateUtils;
 
 import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Keep;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.ToOne;
 
@@ -33,6 +37,11 @@ public class User {
     @ToOne(joinProperty = "bookListId")
     private BookList bookList;
 
+    private Long configId;
+
+    @ToOne(joinProperty = "configId")
+    private Config config;
+
     /**
      * Used to resolve relations
      */
@@ -48,6 +57,9 @@ public class User {
     @Generated(hash = 1015856170)
     private transient Long bookList__resolvedKey;
 
+    @Generated(hash = 1497256190)
+    private transient Long config__resolvedKey;
+
 
     public User(Long Id, @NotNull Date date) {
         this.Id = Id;
@@ -55,15 +67,17 @@ public class User {
     }
 
 
+    @Keep
     public User() {
+        this.date = DateUtils.getNowTime();
     }
 
-
-    @Generated(hash = 1221087395)
-    public User(Long Id, @NotNull Date date, Long bookListId) {
+    @Generated(hash = 1926045751)
+    public User(Long Id, @NotNull Date date, Long bookListId, Long configId) {
         this.Id = Id;
         this.date = date;
         this.bookListId = bookListId;
+        this.configId = configId;
     }
 
 
@@ -180,10 +194,63 @@ public class User {
     }
 
 
-    /** called by internal mechanisms, do not call yourself. */
+    /**
+     * called by internal mechanisms, do not call yourself.
+     */
     @Generated(hash = 2059241980)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getUserDao() : null;
+    }
+
+
+    /** To-one relationship, resolved on first access. */
+    @Generated(hash = 631741533)
+    public Config getConfig() {
+        Long __key = this.configId;
+        if (config__resolvedKey == null || !config__resolvedKey.equals(__key)) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            ConfigDao targetDao = daoSession.getConfigDao();
+            Config configNew = targetDao.load(__key);
+            synchronized (this) {
+                config = configNew;
+                config__resolvedKey = __key;
+            }
+        }
+        return config;
+    }
+
+
+    /** called by internal mechanisms, do not call yourself. */
+    @Generated(hash = 460706070)
+    public void setConfig(Config config) {
+        synchronized (this) {
+            this.config = config;
+            configId = config == null ? null : config.getId();
+            config__resolvedKey = configId;
+        }
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        User needCompare = (User) obj;
+        return Objects.equal(Id, needCompare.Id);
+    }
+
+
+    public Long getConfigId() {
+        return this.configId;
+    }
+
+
+    public void setConfigId(Long configId) {
+        this.configId = configId;
     }
 }
