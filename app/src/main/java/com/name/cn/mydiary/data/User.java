@@ -6,6 +6,7 @@ import com.name.cn.mydiary.data.source.local.dao.BookListDao;
 import com.name.cn.mydiary.data.source.local.dao.ConfigDao;
 import com.name.cn.mydiary.data.source.local.dao.DaoSession;
 import com.name.cn.mydiary.data.source.local.dao.UserDao;
+import com.name.cn.mydiary.function.home.HomeFragment;
 import com.name.cn.mydiary.util.DateUtils;
 
 import org.greenrobot.greendao.DaoException;
@@ -15,6 +16,8 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Keep;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.ToOne;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Date;
 
@@ -41,6 +44,13 @@ public class User {
 
     @ToOne(joinProperty = "configId")
     private Config config;
+
+    private String name;
+
+    @NotNull
+    private int sex;
+
+    private String headPictureUrl;
 
     /**
      * Used to resolve relations
@@ -72,12 +82,16 @@ public class User {
         this.date = DateUtils.getNowTime();
     }
 
-    @Generated(hash = 1926045751)
-    public User(Long Id, @NotNull Date date, Long bookListId, Long configId) {
+    @Generated(hash = 1739685439)
+    public User(Long Id, @NotNull Date date, Long bookListId, Long configId, String name,
+                int sex, String headPictureUrl) {
         this.Id = Id;
         this.date = date;
         this.bookListId = bookListId;
         this.configId = configId;
+        this.name = name;
+        this.sex = sex;
+        this.headPictureUrl = headPictureUrl;
     }
 
 
@@ -204,7 +218,9 @@ public class User {
     }
 
 
-    /** To-one relationship, resolved on first access. */
+    /**
+     * To-one relationship, resolved on first access.
+     */
     @Generated(hash = 631741533)
     public Config getConfig() {
         Long __key = this.configId;
@@ -224,7 +240,9 @@ public class User {
     }
 
 
-    /** called by internal mechanisms, do not call yourself. */
+    /**
+     * called by internal mechanisms, do not call yourself.
+     */
     @Generated(hash = 460706070)
     public void setConfig(Config config) {
         synchronized (this) {
@@ -252,5 +270,49 @@ public class User {
 
     public void setConfigId(Long configId) {
         this.configId = configId;
+    }
+
+
+    public int getSex() {
+        return this.sex;
+    }
+
+
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
+
+
+    public String getName() {
+        return this.name;
+    }
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    public String getHeadPictureUrl() {
+        return this.headPictureUrl;
+    }
+
+
+    public void setHeadPictureUrl(String headPictureUrl) {
+        this.headPictureUrl = headPictureUrl;
+    }
+
+    @Keep
+    public JSONObject toJson() {
+        JSONObject object = new JSONObject();
+        try {
+            object.put("name", name);
+            object.put("headPicture", headPictureUrl);
+            object.put("backGroundPicture", getConfig().getBitmapId());
+            object.put(HomeFragment.ARGUMENT_SHOW_BOOK_LIST_ID, getBookListId());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return object;
     }
 }

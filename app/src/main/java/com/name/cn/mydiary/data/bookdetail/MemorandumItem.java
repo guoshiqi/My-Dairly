@@ -13,7 +13,7 @@ import org.greenrobot.greendao.annotation.NotNull;
 @Entity
 public class MemorandumItem {
 
-    @Id
+    @Id(autoincrement = true)
     private Long id;
 
     @NotNull

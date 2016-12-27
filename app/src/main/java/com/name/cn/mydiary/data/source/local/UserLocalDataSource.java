@@ -4,15 +4,15 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.name.cn.mydiary.data.BookList;
 import com.name.cn.mydiary.data.Config;
 import com.name.cn.mydiary.data.User;
 import com.name.cn.mydiary.data.source.UserDataSource;
+import com.name.cn.mydiary.data.source.local.dao.BookListDao;
 import com.name.cn.mydiary.data.source.local.dao.ConfigDao;
 import com.name.cn.mydiary.data.source.local.dao.UserDao;
 import com.name.cn.mydiary.util.database.GreenDaoManager;
 import com.name.cn.mydiary.util.schedulers.BaseSchedulerProvider;
-
-import org.greenrobot.greendao.annotation.NotNull;
 
 import rx.Observable;
 
@@ -28,11 +28,14 @@ public class UserLocalDataSource implements UserDataSource {
     @Nullable
     private static UserLocalDataSource INSTANCE;
 
-    @NotNull
+    @NonNull
     private UserDao userDao;
 
-    @NotNull
+    @NonNull
     private ConfigDao configDao;
+
+    @NonNull
+    private BookListDao bookListDao;
 
 
     public static UserLocalDataSource getInstance(
@@ -51,6 +54,7 @@ public class UserLocalDataSource implements UserDataSource {
         checkNotNull(schedulerProvider, "scheduleProvider cannot be null");
         userDao = GreenDaoManager.getInstance().getmDaoSession().getUserDao();
         configDao = GreenDaoManager.getInstance().getmDaoSession().getConfigDao();
+        bookListDao = GreenDaoManager.getInstance().getmDaoSession().getBookListDao();
     }
 
 
@@ -65,6 +69,16 @@ public class UserLocalDataSource implements UserDataSource {
     }
 
     @Override
+    public Observable<BookList> getBookList(Long Id) {
+        return Observable.just(bookListDao.load(Id));
+    }
+
+    @Override
+    public void saveBookList(BookList bookList) {
+        bookListDao.save(bookList);
+    }
+
+    @Override
     public void saveUser(User user) {
         userDao.save(user);
     }
@@ -72,6 +86,11 @@ public class UserLocalDataSource implements UserDataSource {
     @Override
     public void saveConfig(Config config) {
         configDao.save(config);
+    }
+
+    @Override
+    public void deleteAllBookList() {
+        bookListDao.deleteAll();
     }
 
     @Override
@@ -92,5 +111,10 @@ public class UserLocalDataSource implements UserDataSource {
     @Override
     public void deleteConfig(Long Id) {
         configDao.deleteByKey(Id);
+    }
+
+    @Override
+    public void deleteBookList(Long Id) {
+        bookListDao.deleteByKey(Id);
     }
 }

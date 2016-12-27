@@ -33,6 +33,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 
 public class HomeFragment extends Fragment implements HomeContract.View {
+    public static final String ARGUMENT_SHOW_BOOK_LIST_ID = "SHOW_BOOK_LIST_ID";
 
     private HomeContract.Presenter mPresenter;
 
@@ -41,7 +42,11 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     private BookItemListener mItemListener;
 
 
-    public static HomeFragment newInstance() {
+    public static HomeFragment newInstance(Long bookListId) {
+        Bundle arguments = new Bundle();
+        arguments.putLong(ARGUMENT_SHOW_BOOK_LIST_ID, bookListId);
+        HomeFragment fragment = new HomeFragment();
+        fragment.setArguments(arguments);
         return new HomeFragment();
     }
 

@@ -3,6 +3,7 @@ package com.name.cn.mydiary.data.source;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.name.cn.mydiary.data.BookList;
 import com.name.cn.mydiary.data.Config;
 import com.name.cn.mydiary.data.User;
 
@@ -26,6 +27,8 @@ public class UserRepository implements UserDataSource {
     private User mUser;
 
     private Config mConfig;
+
+    private BookList mBookList;
 
     private UserRepository(@NonNull UserDataSource userLocalDataSource) {
 
@@ -74,6 +77,22 @@ public class UserRepository implements UserDataSource {
     }
 
     @Override
+    public Observable<BookList> getBookList(Long Id) {
+        checkNotNull(Id);
+        if (mBookList != null) {
+            return Observable.just(mBookList);
+        }
+        return getBookListWithId(Id);
+    }
+
+    @Override
+    public void saveBookList(BookList bookList) {
+        checkNotNull(bookList);
+        mBookList = bookList;
+        mUserLocalDataSource.saveBookList(bookList);
+    }
+
+    @Override
     public void saveUser(User user) {
         checkNotNull(user);
         mUser = user;
@@ -85,6 +104,12 @@ public class UserRepository implements UserDataSource {
         checkNotNull(config);
         mConfig = config;
         mUserLocalDataSource.saveConfig(config);
+    }
+
+    @Override
+    public void deleteAllBookList() {
+        mBookList = null;
+        mUserLocalDataSource.deleteAllBookList();
     }
 
     @Override
@@ -113,6 +138,13 @@ public class UserRepository implements UserDataSource {
         mUserLocalDataSource.deleteConfig(Id);
     }
 
+    @Override
+    public void deleteBookList(Long Id) {
+        checkNotNull(Id);
+        mBookList = null;
+        mUserLocalDataSource.deleteBookList(Id);
+    }
+
 
     private Observable<User> getUserWithId(Long Id) {
         return mUserLocalDataSource
@@ -125,6 +157,13 @@ public class UserRepository implements UserDataSource {
         return mUserLocalDataSource
                 .getConfig(Id)
                 .doOnNext(config -> mConfig = config)
+                .first();
+    }
+
+    private Observable<BookList> getBookListWithId(Long Id) {
+        return mUserLocalDataSource
+                .getBookList(Id)
+                .doOnNext(bookList -> mBookList = bookList)
                 .first();
     }
 }

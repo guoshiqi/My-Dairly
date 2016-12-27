@@ -48,7 +48,7 @@ public class BookDao extends AbstractDao<Book, Long> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"BOOK\" (" + //
-                "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
+                "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "\"BOOK_LIST_ID\" INTEGER NOT NULL ," + // 1: bookListId
                 "\"TYPE\" INTEGER NOT NULL ," + // 2: type
                 "\"TITLE\" TEXT," + // 3: title
@@ -157,16 +157,16 @@ public class BookDao extends AbstractDao<Book, Long> {
     }
     
     /** Internal query to resolve the "bookList" to-many relationship of BookList. */
-    public List<Book> _queryBookList_BookList(Long bookListId) {
+    public List<Book> _queryBookList_BookList(Long id) {
         synchronized (this) {
             if (bookList_BookListQuery == null) {
                 QueryBuilder<Book> queryBuilder = queryBuilder();
-                queryBuilder.where(Properties.BookListId.eq(null));
+                queryBuilder.where(Properties.Id.eq(null));
                 bookList_BookListQuery = queryBuilder.build();
             }
         }
         Query<Book> query = bookList_BookListQuery.forCurrentThread();
-        query.setParameter(0, bookListId);
+        query.setParameter(0, id);
         return query.list();
     }
 

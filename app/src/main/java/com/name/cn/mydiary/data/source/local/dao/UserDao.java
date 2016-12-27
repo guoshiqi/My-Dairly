@@ -34,6 +34,9 @@ public class UserDao extends AbstractDao<User, Long> {
         public final static Property Date = new Property(1, java.util.Date.class, "date", false, "DATE");
         public final static Property BookListId = new Property(2, Long.class, "bookListId", false, "BOOK_LIST_ID");
         public final static Property ConfigId = new Property(3, Long.class, "configId", false, "CONFIG_ID");
+        public final static Property Name = new Property(4, String.class, "name", false, "NAME");
+        public final static Property Sex = new Property(5, int.class, "sex", false, "SEX");
+        public final static Property HeadPictureUrl = new Property(6, String.class, "headPictureUrl", false, "HEAD_PICTURE_URL");
     }
 
     private DaoSession daoSession;
@@ -55,7 +58,10 @@ public class UserDao extends AbstractDao<User, Long> {
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: Id
                 "\"DATE\" INTEGER NOT NULL ," + // 1: date
                 "\"BOOK_LIST_ID\" INTEGER," + // 2: bookListId
-                "\"CONFIG_ID\" INTEGER);"); // 3: configId
+                "\"CONFIG_ID\" INTEGER," + // 3: configId
+                "\"NAME\" TEXT," + // 4: name
+                "\"SEX\" INTEGER NOT NULL ," + // 5: sex
+                "\"HEAD_PICTURE_URL\" TEXT);"); // 6: headPictureUrl
     }
 
     /** Drops the underlying database table. */
@@ -83,6 +89,17 @@ public class UserDao extends AbstractDao<User, Long> {
         if (configId != null) {
             stmt.bindLong(4, configId);
         }
+ 
+        String name = entity.getName();
+        if (name != null) {
+            stmt.bindString(5, name);
+        }
+        stmt.bindLong(6, entity.getSex());
+ 
+        String headPictureUrl = entity.getHeadPictureUrl();
+        if (headPictureUrl != null) {
+            stmt.bindString(7, headPictureUrl);
+        }
     }
 
     @Override
@@ -104,6 +121,17 @@ public class UserDao extends AbstractDao<User, Long> {
         if (configId != null) {
             stmt.bindLong(4, configId);
         }
+ 
+        String name = entity.getName();
+        if (name != null) {
+            stmt.bindString(5, name);
+        }
+        stmt.bindLong(6, entity.getSex());
+ 
+        String headPictureUrl = entity.getHeadPictureUrl();
+        if (headPictureUrl != null) {
+            stmt.bindString(7, headPictureUrl);
+        }
     }
 
     @Override
@@ -123,7 +151,10 @@ public class UserDao extends AbstractDao<User, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // Id
             new java.util.Date(cursor.getLong(offset + 1)), // date
             cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2), // bookListId
-            cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3) // configId
+            cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3), // configId
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // name
+            cursor.getInt(offset + 5), // sex
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6) // headPictureUrl
         );
         return entity;
     }
@@ -134,6 +165,9 @@ public class UserDao extends AbstractDao<User, Long> {
         entity.setDate(new java.util.Date(cursor.getLong(offset + 1)));
         entity.setBookListId(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
         entity.setConfigId(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
+        entity.setName(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setSex(cursor.getInt(offset + 5));
+        entity.setHeadPictureUrl(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
      }
     
     @Override

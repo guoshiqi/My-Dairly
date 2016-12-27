@@ -6,8 +6,12 @@ import android.support.v7.widget.Toolbar;
 
 import com.name.cn.mydiary.Injection;
 import com.name.cn.mydiary.R;
+import com.name.cn.mydiary.framework.AppConstants;
 import com.name.cn.mydiary.framework.BaseActivity;
 import com.name.cn.mydiary.util.ActivityUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class HomeActivity extends BaseActivity {
     private static final String CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY";
@@ -19,6 +23,15 @@ public class HomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //getData
+        Long bookListId = AppConstants.DEFAULT_LONG;
+        try {
+            JSONObject object = new JSONObject(getIntent().getStringExtra(AppConstants.PASS_JSON));
+            bookListId = object.optLong(HomeFragment.ARGUMENT_SHOW_BOOK_LIST_ID, AppConstants.DEFAULT_LONG);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         // Set up the toolbar.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -29,13 +42,13 @@ public class HomeActivity extends BaseActivity {
                 (HomeFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
         if (homeFragment == null) {
             // Create the fragment
-            homeFragment = HomeFragment.newInstance();
+            homeFragment = HomeFragment.newInstance(bookListId);
             ActivityUtils.addFragmentToActivity(
                     getSupportFragmentManager(), homeFragment, R.id.contentFrame);
         }
 
         // Create the presenter
-        mHomePresenter = new HomePresenter(
+        mHomePresenter = new HomePresenter(bookListId,
                 Injection.provideBooksRepository(getApplicationContext()),
                 homeFragment,
                 Injection.provideSchedulerProvider());

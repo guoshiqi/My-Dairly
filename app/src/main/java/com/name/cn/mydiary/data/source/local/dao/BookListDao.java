@@ -25,7 +25,6 @@ public class BookListDao extends AbstractDao<BookList, Long> {
      */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property BookListId = new Property(1, Long.class, "bookListId", false, "BOOK_LIST_ID");
     }
 
     private DaoSession daoSession;
@@ -44,8 +43,7 @@ public class BookListDao extends AbstractDao<BookList, Long> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"BOOK_LIST\" (" + //
-                "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
-                "\"BOOK_LIST_ID\" INTEGER);"); // 1: bookListId
+                "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT );"); // 0: id
     }
 
     /** Drops the underlying database table. */
@@ -62,11 +60,6 @@ public class BookListDao extends AbstractDao<BookList, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
- 
-        Long bookListId = entity.getBookListId();
-        if (bookListId != null) {
-            stmt.bindLong(2, bookListId);
-        }
     }
 
     @Override
@@ -76,11 +69,6 @@ public class BookListDao extends AbstractDao<BookList, Long> {
         Long id = entity.getId();
         if (id != null) {
             stmt.bindLong(1, id);
-        }
- 
-        Long bookListId = entity.getBookListId();
-        if (bookListId != null) {
-            stmt.bindLong(2, bookListId);
         }
     }
 
@@ -98,8 +86,7 @@ public class BookListDao extends AbstractDao<BookList, Long> {
     @Override
     public BookList readEntity(Cursor cursor, int offset) {
         BookList entity = new BookList( //
-            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1) // bookListId
+            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0) // id
         );
         return entity;
     }
@@ -107,7 +94,6 @@ public class BookListDao extends AbstractDao<BookList, Long> {
     @Override
     public void readEntity(Cursor cursor, BookList entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setBookListId(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
      }
     
     @Override

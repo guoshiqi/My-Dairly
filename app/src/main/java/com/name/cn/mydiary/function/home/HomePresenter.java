@@ -35,15 +35,20 @@ public class HomePresenter implements HomeContract.Presenter {
     @NonNull
     private HomeFilterType mCurrentFiltering = HomeFilterType.ALL_BOOKS;
 
+    @NonNull
+    private Long mBookListId;
+
     private boolean mFirstLoad = true;
 
 
     private boolean mIsDataMissing;
 
 
-    public HomePresenter(@NonNull BookDataSource booksRepository,
+    public HomePresenter(@NonNull Long bookListId,
+                         @NonNull BookDataSource booksRepository,
                          @NonNull HomeContract.View homeView,
                          @NonNull BaseSchedulerProvider schedulerProvider) {
+        this.mBookListId=checkNotNull(bookListId,"bookListId cannot be null");
         this.mBooksRepository = checkNotNull(booksRepository, "booksRepository cannot be null");
         this.mBooksView = checkNotNull(homeView, "homeView cannot be null");
         this.mSchedulerProvider = checkNotNull(schedulerProvider, "schedulerProvider cannot be null");
@@ -108,7 +113,7 @@ public class HomePresenter implements HomeContract.Presenter {
 
         mSubscriptions.clear();
         Subscription subscription = mBooksRepository
-                .getAllBooks(1L)
+                .getAllBooks(mBookListId)
                 .flatMap(new Func1<List<Book>, Observable<Book>>() {
                     @Override
                     public Observable<Book> call(List<Book> books) {
@@ -167,7 +172,7 @@ public class HomePresenter implements HomeContract.Presenter {
     }
 
     private void createBook(String title) {
-        Book newBook = new Book(null, 1L, Book.BOOK_DIARY, title, "");
+        Book newBook = new Book(null, mBookListId, Book.BOOK_DIARY, title, "");
         if (newBook.isEmpty()) {
 
         } else {

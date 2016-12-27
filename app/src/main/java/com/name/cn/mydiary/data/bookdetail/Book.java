@@ -19,7 +19,7 @@ public class Book {
     public static final int BOOK_DIARY=1;
     public static final int BOOK_MEMORANDUM=2;
 
-    @Id
+    @Id(autoincrement = true)
     private Long id;
 
     //对应bookList中bookId一个用户含有一个书单的书单id

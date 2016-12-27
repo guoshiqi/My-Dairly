@@ -69,7 +69,7 @@ public class UserLocalDataSourceTest {
     @Test
     public void checkConfigNotNull() {
         //init
-        Config config = new Config(null, 1);
+        Config config = new Config(null, "1");
         final User user = new User();
 
         //save
@@ -86,13 +86,13 @@ public class UserLocalDataSourceTest {
     @Test
     public void updateConfig() {
         //init user
-        Config config = new Config(null, 1);
+        Config config = new Config(null, "1");
         final User user = new User();
         mLocalDataSource.saveConfig(config);
         mLocalDataSource.saveUser(user);
 
         user.setConfigId(config.getId());
-        config.setBitmapId(2);
+        config.setBitmapId("2");
         //update config
 
         mLocalDataSource.saveConfig(config);

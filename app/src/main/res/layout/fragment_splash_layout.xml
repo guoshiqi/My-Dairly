@@ -12,6 +12,7 @@
     <ViewStub
         android:id="@+id/guide_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout="@layout/fragment_splash_guide_layout"/>
 
 </FrameLayout>

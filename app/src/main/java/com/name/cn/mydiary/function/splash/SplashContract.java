@@ -10,20 +10,23 @@ import com.name.cn.mydiary.framework.BaseView;
  */
 
 public interface SplashContract {
-    interface View extends BaseView<Presenter>{
+    interface View extends BaseView<Presenter> {
         void showSplashPage(boolean isNeedUpdate);
 
         void showGuide();
 
-        void gotoHomePage();
+        void gotoHomePage(User user);
+
+        boolean isActive();
     }
 
 
-    interface Presenter extends BasePresenter{
+    interface Presenter extends BasePresenter {
         void checkDataBaseVersion();
 
         void checkUser();
 
 
+        void saveUser(int sex, String name, String url);
     }
 }

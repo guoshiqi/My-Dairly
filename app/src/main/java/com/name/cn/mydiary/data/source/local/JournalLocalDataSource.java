@@ -28,7 +28,7 @@ public class JournalLocalDataSource implements JournalDataSource {
     @Nullable
     private static JournalLocalDataSource INSTANCE;
 
-    @NotNull
+    @NonNull
     private JournalDao dao;
 
     public static JournalLocalDataSource getInstance(

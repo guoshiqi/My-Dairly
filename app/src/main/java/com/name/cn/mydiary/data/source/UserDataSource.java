@@ -1,5 +1,6 @@
 package com.name.cn.mydiary.data.source;
 
+import com.name.cn.mydiary.data.BookList;
 import com.name.cn.mydiary.data.Config;
 import com.name.cn.mydiary.data.User;
 
@@ -17,9 +18,15 @@ public interface UserDataSource {
 
     Observable<Config> getConfig(Long Id);
 
+    Observable<BookList> getBookList(Long Id);
+
+    void saveBookList(BookList bookList);
+
     void saveUser(User user);
 
     void saveConfig(Config config);
+
+    void deleteAllBookList();
 
     void deleteAllUser();
 
@@ -28,4 +35,6 @@ public interface UserDataSource {
     void deleteUser(Long Id);
 
     void deleteConfig(Long Id);
+
+    void deleteBookList(Long Id);
 }

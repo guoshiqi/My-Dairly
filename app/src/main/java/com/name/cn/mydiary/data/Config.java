@@ -15,22 +15,24 @@ import org.greenrobot.greendao.annotation.Keep;
 @Entity
 public class Config {
 
-    @Id
+    @Id(autoincrement = true)
     private Long id;
 
 
-    private int bitmapId;
+    private String bitmapId;
 
 
-    @Generated(hash = 238064950)
-    public Config(Long id, int bitmapId) {
-        this.id = id;
-        this.bitmapId = bitmapId;
-    }
-
+   
 
     @Generated(hash = 589037648)
     public Config() {
+    }
+
+
+    @Generated(hash = 1003127772)
+    public Config(Long id, String bitmapId) {
+        this.id = id;
+        this.bitmapId = bitmapId;
     }
 
 
@@ -44,14 +46,7 @@ public class Config {
     }
 
 
-    public int getBitmapId() {
-        return this.bitmapId;
-    }
 
-
-    public void setBitmapId(int bitmapId) {
-        this.bitmapId = bitmapId;
-    }
 
 
     @Keep
@@ -62,5 +57,15 @@ public class Config {
 
         Config needCompare = (Config) obj;
         return Objects.equal(id, needCompare.id) && Objects.equal(bitmapId, needCompare.bitmapId);
+    }
+
+
+    public String getBitmapId() {
+        return this.bitmapId;
+    }
+
+
+    public void setBitmapId(String bitmapId) {
+        this.bitmapId = bitmapId;
     }
 }

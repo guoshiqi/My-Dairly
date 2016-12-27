@@ -10,6 +10,7 @@ import android.view.ViewStub;
 import android.widget.ImageView;
 
 import com.name.cn.mydiary.R;
+import com.name.cn.mydiary.data.User;
 import com.name.cn.mydiary.framework.BaseFragment;
 import com.name.cn.mydiary.util.IntentUtils;
 
@@ -21,6 +22,10 @@ import com.name.cn.mydiary.util.IntentUtils;
 public class SplashFragment extends BaseFragment implements SplashContract.View {
 
     private SplashContract.Presenter mPresenter;
+
+    private ImageView startView;
+
+    private ViewStub guideView;
 
 
     public static SplashFragment newInstance() {
@@ -49,8 +54,8 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_splash_layout, container, false);
         //setupView
-        ImageView startView = (ImageView) root.findViewById(R.id.splash_fragment_image);
-        ViewStub guideView = (ViewStub) root.findViewById(R.id.guide_layout);
+        startView = (ImageView) root.findViewById(R.id.splash_fragment_image);
+        guideView = (ViewStub) root.findViewById(R.id.guide_layout);
 
         return root;
     }
@@ -63,13 +68,18 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
 
     @Override
     public void showGuide() {
-
+        guideView.inflate();
     }
 
     @Override
-    public void gotoHomePage() {
-        IntentUtils.SplashToHomeActivity(this, getContext());
+    public void gotoHomePage(User user) {
+        IntentUtils.SplashToHomeActivity(this, getContext(), user.toJson().toString());
         getActivity().finish();
+    }
+
+    @Override
+    public boolean isActive() {
+        return isAdded();
     }
 
     @Override
