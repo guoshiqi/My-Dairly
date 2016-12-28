@@ -21,22 +21,22 @@ public class DaoMaster extends AbstractDaoMaster {
 
     /** Creates underlying database table using DAOs. */
     public static void createAllTables(Database db, boolean ifNotExists) {
-        MemorandumItemDao.createTable(db, ifNotExists);
-        UserDao.createTable(db, ifNotExists);
-        JournalDao.createTable(db, ifNotExists);
-        BookListDao.createTable(db, ifNotExists);
         BookDao.createTable(db, ifNotExists);
+        JournalDao.createTable(db, ifNotExists);
+        MemorandumItemDao.createTable(db, ifNotExists);
+        BookListDao.createTable(db, ifNotExists);
         ConfigDao.createTable(db, ifNotExists);
+        UserDao.createTable(db, ifNotExists);
     }
 
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(Database db, boolean ifExists) {
-        MemorandumItemDao.dropTable(db, ifExists);
-        UserDao.dropTable(db, ifExists);
-        JournalDao.dropTable(db, ifExists);
-        BookListDao.dropTable(db, ifExists);
         BookDao.dropTable(db, ifExists);
+        JournalDao.dropTable(db, ifExists);
+        MemorandumItemDao.dropTable(db, ifExists);
+        BookListDao.dropTable(db, ifExists);
         ConfigDao.dropTable(db, ifExists);
+        UserDao.dropTable(db, ifExists);
     }
 
     /**
@@ -55,12 +55,12 @@ public class DaoMaster extends AbstractDaoMaster {
 
     public DaoMaster(Database db) {
         super(db, SCHEMA_VERSION);
-        registerDaoClass(MemorandumItemDao.class);
-        registerDaoClass(UserDao.class);
-        registerDaoClass(JournalDao.class);
-        registerDaoClass(BookListDao.class);
         registerDaoClass(BookDao.class);
+        registerDaoClass(JournalDao.class);
+        registerDaoClass(MemorandumItemDao.class);
+        registerDaoClass(BookListDao.class);
         registerDaoClass(ConfigDao.class);
+        registerDaoClass(UserDao.class);
     }
 
     public DaoSession newSession() {
