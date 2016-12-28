@@ -50,5 +50,7 @@ ext {
     awaitilityVersion='2.0.0';
     baseRecyAdapterVersion='2.6.6';
     leakcanaryVersion='1.5';
+    pathviewVersion='1.0.8@aar';
+    greendaoVersion='3.2.0';
 }
 

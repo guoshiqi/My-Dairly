@@ -3,16 +3,18 @@ package com.name.cn.mydiary.function.splash;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 
+import com.eftimoff.androipathview.PathView;
 import com.name.cn.mydiary.R;
 import com.name.cn.mydiary.data.User;
 import com.name.cn.mydiary.framework.BaseFragment;
-import com.name.cn.mydiary.util.IntentUtils;
 
 /**
  * 启动页fragment
@@ -56,7 +58,15 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
         //setupView
         startView = (ImageView) root.findViewById(R.id.splash_fragment_image);
         guideView = (ViewStub) root.findViewById(R.id.guide_layout);
-
+        PathView pathView = (PathView) root.findViewById(R.id.pathView);
+        pathView.getPathAnimator()
+                .delay(100)
+                .duration(2000)
+                .interpolator(new AccelerateDecelerateInterpolator())
+                .listenerEnd(() -> pathView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.splash_init_path)))
+                .start();
+        pathView.useNaturalColors();
+        pathView.setFillAfter(true);
         return root;
     }
 
@@ -73,8 +83,8 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
 
     @Override
     public void gotoHomePage(User user) {
-        IntentUtils.SplashToHomeActivity(this, getContext(), user.toJson().toString());
-        getActivity().finish();
+//        IntentUtils.SplashToHomeActivity(this, getContext(), user.toJson().toString());
+//        getActivity().finish();
     }
 
     @Override

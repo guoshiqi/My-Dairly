@@ -88,6 +88,8 @@ dependencies {
     compile "com.squareup.sqlbrite:sqlbrite:$rootProject.sqlbriteVersion"
     compile "com.hwangjr.rxbus:rxbus:$rootProject.rxbusVersion"
     compile "com.github.CymChad:BaseRecyclerViewAdapterHelper:$rootProject.baseRecyAdapterVersion"
+    compile "com.eftimoff:android-pathview:$rootProject.pathviewVersion"
+    compile "org.greenrobot:greendao:$rootProject.greendaoVersion"
 
     debugCompile "com.squareup.leakcanary:leakcanary-android:$rootProject.leakcanaryVersion"
     releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.leakcanaryVersion"
@@ -124,6 +126,5 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'org.greenrobot:greendao:3.2.0'
     testCompile 'junit:junit:4.12'
 }

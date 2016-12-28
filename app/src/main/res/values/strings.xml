@@ -4,4 +4,7 @@
     <string name="dialog_input_text">写点什么</string>
     <string name="dialog_positive">确定</string>
     <string name="dialog_negative">取消</string>
+
+
+    <!--svg-->
 </resources>
