@@ -1,7 +1,11 @@
 package com.name.cn.mydiary.function.splash;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.transition.Explode;
+import android.transition.Fade;
+import android.view.Window;
 
 import com.name.cn.mydiary.Injection;
 import com.name.cn.mydiary.R;
@@ -23,6 +27,7 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_layout);
+
 
         SplashFragment splashFragment =
                 (SplashFragment) getSupportFragmentManager().findFragmentById(R.id.splash_fragment);

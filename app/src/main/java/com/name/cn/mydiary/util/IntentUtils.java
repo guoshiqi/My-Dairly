@@ -14,9 +14,9 @@ import com.name.cn.mydiary.function.home.HomeActivity;
 
 public class IntentUtils {
 
-    public static void SplashToHomeActivity(Fragment frg, Context context, String user) {
+    public static void SplashToHomeActivity(Context context, String user) {
         Intent intent = new Intent(context, HomeActivity.class);
         intent.putExtra(AppConstants.PASS_JSON, user);
-        frg.startActivity(intent);
+        context.startActivity(intent);
     }
 }

@@ -99,7 +99,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         FloatingActionButton fab =
                 (FloatingActionButton) getActivity().findViewById(R.id.fab_add_book);
 
-        fab.setImageResource(R.drawable.ic_add);
+        fab.setImageResource(R.drawable.ic_create_white);
         fab.setOnClickListener(__ -> mPresenter.addNewBook());
 
         // Set up  no tasks view
