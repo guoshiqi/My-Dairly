@@ -14,8 +14,10 @@ import org.mockito.MockitoAnnotations;
 import java.util.Collections;
 import java.util.List;
 
-import rx.Observable;
-import rx.observers.TestSubscriber;
+;
+
+import io.reactivex.Observable;
+import io.reactivex.observers.TestObserver;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -41,7 +43,7 @@ public class JournalsRepositoryTest {
 
     private static List<Journal> JOURNALSD = Lists.newArrayList(new Journal(2L, 2L, "asd"));
 
-    private TestSubscriber<List<Journal>> mJournalsTestSubscriber;
+    private TestObserver<List<Journal>> mJournalsTestSubscriber;
 
     private JournalsRepository mJournalsRepository;
     @Mock
@@ -59,7 +61,7 @@ public class JournalsRepositoryTest {
         // Get a reference to the class under test
         mJournalsRepository = JournalsRepository.getInstance(mJournalsLocalDataSource);
 
-        mJournalsTestSubscriber = new TestSubscriber<>();
+        mJournalsTestSubscriber = new TestObserver<>();
     }
 
     @After

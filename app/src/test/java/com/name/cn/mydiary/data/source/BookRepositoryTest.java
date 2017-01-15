@@ -15,8 +15,9 @@ import org.mockito.MockitoAnnotations;
 import java.util.Collections;
 import java.util.List;
 
-import rx.Observable;
-import rx.observers.TestSubscriber;
+import io.reactivex.Observable;
+import io.reactivex.observers.TestObserver;
+
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -42,7 +43,7 @@ public class BookRepositoryTest {
             new Book(null, 1L, Book.BOOK_DIARY, "asd", "asd"));
 
     private static List<Book> BookD = Lists.newArrayList(new Book(null, 1L, Book.BOOK_DIARY, "as", "as"));
-    private TestSubscriber<List<Book>> mBooksTestSubscriber;
+    private TestObserver<List<Book>> mBooksTestSubscriber;
 
     private BooksRepository mBooksRepository;
     @Mock
@@ -60,7 +61,7 @@ public class BookRepositoryTest {
         // Get a reference to the class under test
         mBooksRepository = BooksRepository.getInstance(mBooksLocalDataSource);
 
-        mBooksTestSubscriber = new TestSubscriber<>();
+        mBooksTestSubscriber = new TestObserver<>();
     }
 
     @After

@@ -12,8 +12,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import rx.Observable;
-import rx.functions.Func1;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -75,7 +77,7 @@ public class JournalsRepository implements JournalDataSource {
     public Observable<List<Journal>> getAllJournals() {
         // Respond immediately with cache if available and not dirty
         if (mCachedJournals != null && !mCacheIsDirty) {
-            return Observable.from(getTotalJournal()).toList();
+            return Observable.fromIterable(getTotalJournal()).toList().toObservable();
         } else if (mCachedJournals == null) {
             mCachedJournals = new LinkedHashMap<>();
         }
@@ -91,7 +93,7 @@ public class JournalsRepository implements JournalDataSource {
         checkNotNull(bookId);
 
         if (mCachedJournals != null) {
-            return Observable.from(mCachedJournals.get(bookId).values()).toList();
+            return Observable.fromIterable(mCachedJournals.get(bookId).values()).toList().toObservable();
         }
         return getJournalWithOwnDiaryIdFromLocalRepository(bookId);
     }
@@ -159,13 +161,15 @@ public class JournalsRepository implements JournalDataSource {
 
     private Observable<List<Journal>> getAndCacheLocalJournals() {
         return mJournalLocalDataSource.getAllJournals()
-                .flatMap(new Func1<List<Journal>, Observable<List<Journal>>>() {
+                .flatMap(new Function<List<Journal>, ObservableSource<List<Journal>>>() {
                     @Override
-                    public Observable<List<Journal>> call(List<Journal> journals) {
-                        return Observable.from(journals)
+                    public ObservableSource<List<Journal>> apply(List<Journal> journals) throws Exception {
+                        return Observable.fromIterable(journals)
                                 .doOnNext(journal -> dataToCache(journal))
-                                .toList();
+                                .toList()
+                                .toObservable();
                     }
+
                 });
     }
 
@@ -188,7 +192,8 @@ public class JournalsRepository implements JournalDataSource {
         return mJournalLocalDataSource
                 .getJournal(journalId)
                 .doOnNext(journal -> mCachedJournals.get(journal.getStringJournalOwnId()).put(journalId, journal))
-                .first();
+                .firstElement()
+                .toObservable();
     }
 
     private Observable<List<Journal>> getJournalWithOwnDiaryIdFromLocalRepository(@NonNull final String journalOwnId) {
@@ -201,7 +206,8 @@ public class JournalsRepository implements JournalDataSource {
                             map.put(journal.getStringId(), journal);
                         }
                 })
-                .first();
+                .firstElement()
+                .toObservable();
     }
 
     private Collection<Journal> getTotalJournal() {

@@ -1,6 +1,7 @@
 package com.name.cn.mydiary.function.splash;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.name.cn.mydiary.data.BookList;
 import com.name.cn.mydiary.data.Config;
@@ -11,7 +12,10 @@ import com.name.cn.mydiary.util.DateUtils;
 import com.name.cn.mydiary.util.SPUtils;
 import com.name.cn.mydiary.util.schedulers.BaseSchedulerProvider;
 
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
+import io.reactivex.CompletableSource;
+import io.reactivex.disposables.CompositeDisposable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -30,10 +34,7 @@ public class SplashPresenter implements SplashContract.Presenter {
     @NonNull
     private final BaseSchedulerProvider mSchedulerProvider;
 
-    @NonNull
-    private Long userId;
-
-    @NonNull
+    @Nullable
     private User user;
 
 
@@ -44,7 +45,7 @@ public class SplashPresenter implements SplashContract.Presenter {
         this.mSplashView = checkNotNull(splashView, "homeView cannot be null");
         this.mSchedulerProvider = checkNotNull(schedulerProvider, "schedulerProvider cannot be null");
 
-        mSubscriptions = new CompositeSubscription();
+        mSubscriptions = new CompositeDisposable();
         mSplashView.setPresenter(this);
     }
 
@@ -59,7 +60,7 @@ public class SplashPresenter implements SplashContract.Presenter {
     }
 
     @NonNull
-    private CompositeSubscription mSubscriptions;
+    private CompositeDisposable mSubscriptions;
 
 
     //检查数据库是否需要升级
@@ -71,7 +72,7 @@ public class SplashPresenter implements SplashContract.Presenter {
     //检查是否新用户
     @Override
     public void checkUser() {
-        userId = (Long) SPUtils.get(AppConstants.APP_USER_ID, AppConstants.DEFAULT_LONG);
+        Long userId = (Long) SPUtils.get(AppConstants.APP_USER_ID, AppConstants.DEFAULT_LONG);
         if (userId.equals(AppConstants.DEFAULT_LONG)) {
             createNewUserAndShowGuide();
         } else {
@@ -83,7 +84,8 @@ public class SplashPresenter implements SplashContract.Presenter {
                             //onnext
                             user -> {
                                 if (user != null) {
-                                    mSplashView.gotoHomePage(user);
+//                                    goGuideWithAnim();
+                                    normalGoHomeAnim(user);
                                 } else {
                                     createNewUserAndShowGuide();
                                 }
@@ -99,9 +101,12 @@ public class SplashPresenter implements SplashContract.Presenter {
 
     @Override
     public void saveUser(int sex, String name, String url) {
+        checkNotNull(user);
         user.setSex(sex);
         user.setName(name);
         user.setHeadPictureUrl(url);
+        mUserRepository.saveUser(user);
+        mSplashView.gotoHomePage(user);
     }
 
 
@@ -114,9 +119,42 @@ public class SplashPresenter implements SplashContract.Presenter {
         user.setConfigId(config.getId());
         user.setBookListId(bookList.getId());
         mUserRepository.saveUser(user);
-        userId = user.getId();
+        Long userId = user.getId();
         SPUtils.put(AppConstants.APP_USER_ID, userId);
-        mSplashView.showGuide();
+        goGuideWithAnim();
+    }
+
+    private void normalGoHomeAnim(User user) {
+        Completable pathAnim = Completable.create(mSplashView::runPathAnim);
+        Completable backAnim = Completable.create(mSplashView::runBackGroundAnim);
+        Completable scaleAnim = Completable.create(mSplashView::runScaleAnim);
+        mSubscriptions.add(pathAnim
+                .mergeWith(backAnim)
+                .andThen(scaleAnim)
+                .andThen(new CompletableSource() {
+                    @Override
+                    public void subscribe(CompletableObserver cs) {
+                        mSplashView.gotoHomePage(user);
+                    }
+                })
+                .subscribe());
+    }
+
+
+    private void goGuideWithAnim() {
+        Completable pathAnim = Completable.create(mSplashView::runPathAnim);
+        Completable backAnim = Completable.create(mSplashView::runBackGroundAnim);
+        Completable circleAnim = Completable.create(mSplashView::runCircleAnim);
+        mSubscriptions.add(pathAnim
+                .mergeWith(backAnim)
+                .andThen(circleAnim)
+                .andThen(new CompletableSource() {
+                    @Override
+                    public void subscribe(CompletableObserver cs) {
+                        mSplashView.showGuide();
+                    }
+                })
+                .subscribe());
     }
 
 }

@@ -6,7 +6,8 @@ import com.name.cn.mydiary.data.bookdetail.Journal;
 
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
+
 
 /**
  * 日记缓存使用接口

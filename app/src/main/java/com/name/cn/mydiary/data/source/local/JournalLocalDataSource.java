@@ -10,11 +10,13 @@ import com.name.cn.mydiary.data.source.local.dao.JournalDao;
 import com.name.cn.mydiary.util.database.GreenDaoManager;
 import com.name.cn.mydiary.util.schedulers.BaseSchedulerProvider;
 
-import org.greenrobot.greendao.annotation.NotNull;
+
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
-import rx.Observable;
+
+import io.reactivex.Observable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -60,9 +62,14 @@ public class JournalLocalDataSource implements JournalDataSource {
     }
 
     @Override
-    public Observable<Journal> getJournal(@NonNull String journalId) {
+    public Observable<Journal> getJournal(@NonNull final String journalId) {
 
-        return Observable.just(dao.load(Long.valueOf(journalId)));
+        return Observable.fromCallable(new Callable<Journal>() {
+            @Override
+            public Journal call() throws Exception {
+                return dao.load(Long.valueOf(journalId));
+            }
+        });
     }
 
     @Override

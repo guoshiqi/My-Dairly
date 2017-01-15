@@ -16,6 +16,7 @@ public class IntentUtils {
 
     public static void SplashToHomeActivity(Context context, String user) {
         Intent intent = new Intent(context, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(AppConstants.PASS_JSON, user);
         context.startActivity(intent);
     }

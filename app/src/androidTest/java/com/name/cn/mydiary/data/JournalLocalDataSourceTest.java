@@ -16,7 +16,9 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
-import rx.observers.TestSubscriber;
+
+import io.reactivex.observers.TestObserver;
+import io.reactivex.subscribers.TestSubscriber;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
@@ -69,7 +71,7 @@ public class JournalLocalDataSourceTest {
         mLocalDataSource.saveJournal(newJournal);
 
         // Then the task can be retrieved from the persistent repository
-        TestSubscriber<Journal> testSubscriber = new TestSubscriber<Journal>();
+        TestObserver<Journal> testSubscriber = new TestObserver<Journal>();
         mLocalDataSource.getJournal(newJournal.getStringId()).subscribe(testSubscriber);
         testSubscriber.assertValues(newJournal);
     }
@@ -85,9 +87,9 @@ public class JournalLocalDataSourceTest {
         mLocalDataSource.deleteAllJournals();
 
         // Then the retrieved tasks is an empty list
-        TestSubscriber<List<Journal>> testSubscriber = new TestSubscriber<List<Journal>>();
+        TestObserver<List<Journal>> testSubscriber = new TestObserver<List<Journal>>();
         mLocalDataSource.getAllJournals().subscribe(testSubscriber);
-        List<Journal> result = testSubscriber.getOnNextEvents().get(0);
+        List<Journal> result = testSubscriber.values().get(0);
         assertThat(result.isEmpty(), is(true));
 
     }
@@ -102,9 +104,9 @@ public class JournalLocalDataSourceTest {
 
 
         // Then the tasks can be retrieved from the persistent repository
-        TestSubscriber<List<Journal>> testSubscriber = new TestSubscriber<List<Journal>>();
+        TestObserver<List<Journal>> testSubscriber = new TestObserver<List<Journal>>();
         mLocalDataSource.getAllJournals().subscribe(testSubscriber);
-        List<Journal> result = testSubscriber.getOnNextEvents().get(0);
+        List<Journal> result = testSubscriber.values().get(0);
         assertThat(result, hasItems(newJournal1, newJournal2));
 
     }
@@ -113,9 +115,9 @@ public class JournalLocalDataSourceTest {
     public void getTask_whenTaskNotSaved() {
         //Given that no task has been saved
         //When querying for a task, null is returned.
-        TestSubscriber<Journal> testSubscriber = new TestSubscriber<Journal>();
+        TestObserver<Journal> testSubscriber = new TestObserver<Journal>();
         mLocalDataSource.getJournal("1").subscribe(testSubscriber);
-        testSubscriber.assertValue(null);
+        testSubscriber.assertNoValues();
     }
 
     @Test
@@ -130,11 +132,11 @@ public class JournalLocalDataSourceTest {
 
 
         //获取其中一种bookid的list
-        TestSubscriber<List<Journal>> testSubscriber = new TestSubscriber<List<Journal>>();
+        TestObserver<List<Journal>> testSubscriber = new TestObserver<List<Journal>>();
         mLocalDataSource.getJournals("2").subscribe(testSubscriber);
-        testSubscriber.assertCompleted();
+        testSubscriber.assertComplete();
         testSubscriber.assertNoErrors();
-        List<Journal> result = testSubscriber.getOnNextEvents().get(0);
+        List<Journal> result = testSubscriber.values().get(0);
         assertThat(result, not(hasItems(newJournal1)));
     }
 }

@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.name.cn.mydiary.R;
 import com.name.cn.mydiary.data.bookdetail.Book;
 import com.name.cn.mydiary.widget.ScrollChildSwipeRefreshLayout;
@@ -94,6 +95,12 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.books_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(mBooksAdapter);
+        recyclerView.addOnItemTouchListener(new OnItemClickListener() {
+            @Override
+            public void onSimpleItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+
+            }
+        });
 
         // Set up floating action button
         FloatingActionButton fab =

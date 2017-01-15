@@ -6,5 +6,14 @@
     <string name="dialog_negative">取消</string>
 
 
+    <string name="splash_title">有点东西</string>
+
+
+    <!--splash guide-->
+    <string name="guide_skip">skip</string>
+    <string name="guide_step1_question">告诉我你的性别吧</string>
+    <string name="guide_step1_answer1">男</string>
+    <string name="guide_step1_answer2">女</string>
+    <string name="guide_step2_question">你的名字以及选上你想要的的头像</string>
     <!--svg-->
 </resources>

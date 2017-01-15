@@ -6,7 +6,6 @@ import android.support.annotation.VisibleForTesting;
 
 import com.name.cn.mydiary.data.bookdetail.Book;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,8 +13,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import rx.Observable;
-import rx.functions.Func1;
+import io.reactivex.Flowable;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -75,14 +76,12 @@ public class BooksRepository implements BookDataSource {
         checkNotNull(bookListId);
         if (cacheMap != null && !mCacheIsDirty) {
             List<Book> list = new ArrayList<>();
-            Iterator<Map.Entry<Long, Book>> it = cacheMap.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry<Long, Book> entry = it.next();
+            for (Map.Entry<Long, Book> entry : cacheMap.entrySet()) {
                 if (entry.getValue().getBookListId().equals(bookListId)) {
                     list.add(entry.getValue());
                 }
             }
-            return Observable.from(list).toList();
+            return Observable.just(list);
         } else if (cacheMap == null) {
             cacheMap = new LinkedHashMap<>();
         }
@@ -142,12 +141,13 @@ public class BooksRepository implements BookDataSource {
 
     private Observable<List<Book>> getAndCacheLocalJournals(Long bookListId) {
         return mBookLocalDataSource.getAllBooks(bookListId)
-                .flatMap(new Func1<List<Book>, Observable<List<Book>>>() {
+                .flatMap(new Function<List<Book>, ObservableSource<List<Book>>>() {
                     @Override
-                    public Observable<List<Book>> call(List<Book> books) {
-                        return Observable.from(books)
+                    public ObservableSource<List<Book>> apply(List<Book> books) throws Exception {
+                        return Observable.fromIterable(books)
                                 .doOnNext(book -> cacheMap.put(book.getId(), book))
-                                .toList();
+                                .toList()
+                                .toObservable();
                     }
                 });
     }
@@ -157,7 +157,8 @@ public class BooksRepository implements BookDataSource {
         return mBookLocalDataSource
                 .getBook(bookId)
                 .doOnNext(book -> cacheMap.put(bookId, book))
-                .first();
+                .firstElement()
+                .toObservable();
     }
 
 }

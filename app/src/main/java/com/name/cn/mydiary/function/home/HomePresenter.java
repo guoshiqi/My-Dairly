@@ -9,10 +9,11 @@ import com.name.cn.mydiary.util.schedulers.BaseSchedulerProvider;
 
 import java.util.List;
 
-import rx.Observable;
-import rx.Subscription;
-import rx.functions.Func1;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -48,18 +49,18 @@ public class HomePresenter implements HomeContract.Presenter {
                          @NonNull BookDataSource booksRepository,
                          @NonNull HomeContract.View homeView,
                          @NonNull BaseSchedulerProvider schedulerProvider) {
-        this.mBookListId=checkNotNull(bookListId,"bookListId cannot be null");
+        this.mBookListId = checkNotNull(bookListId, "bookListId cannot be null");
         this.mBooksRepository = checkNotNull(booksRepository, "booksRepository cannot be null");
         this.mBooksView = checkNotNull(homeView, "homeView cannot be null");
         this.mSchedulerProvider = checkNotNull(schedulerProvider, "schedulerProvider cannot be null");
 
-        mSubscriptions = new CompositeSubscription();
+        mSubscriptions = new CompositeDisposable();
         mBooksView.setPresenter(this);
     }
 
     @Override
     public void subscribe() {
-        loadBooks(false);
+        loadBooks(false, false);
     }
 
     @Override
@@ -68,7 +69,7 @@ public class HomePresenter implements HomeContract.Presenter {
     }
 
     @NonNull
-    private CompositeSubscription mSubscriptions;
+    private CompositeDisposable mSubscriptions;
 
 
     @Override
@@ -112,13 +113,14 @@ public class HomePresenter implements HomeContract.Presenter {
         EspressoIdlingResource.increment(); // App is busy until further notice
 
         mSubscriptions.clear();
-        Subscription subscription = mBooksRepository
+        Disposable subscription = mBooksRepository
                 .getAllBooks(mBookListId)
-                .flatMap(new Func1<List<Book>, Observable<Book>>() {
+                .flatMap(new Function<List<Book>, ObservableSource<Book>>() {
                     @Override
-                    public Observable<Book> call(List<Book> books) {
-                        return Observable.from(books);
+                    public ObservableSource<Book> apply(List<Book> books) throws Exception {
+                        return Observable.fromIterable(books);
                     }
+
                 })
                 .filter(book -> {
                     switch (mCurrentFiltering) {
@@ -130,6 +132,7 @@ public class HomePresenter implements HomeContract.Presenter {
                 .toList()
                 .subscribeOn(mSchedulerProvider.computation())
                 .observeOn(mSchedulerProvider.ui())
+                .toObservable()
                 .doOnTerminate(() -> {
                     if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
                         EspressoIdlingResource.decrement(); // Set app as idle.

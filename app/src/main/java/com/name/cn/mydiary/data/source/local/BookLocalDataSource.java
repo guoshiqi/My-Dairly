@@ -14,8 +14,10 @@ import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.query.DeleteQuery;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
-import rx.Observable;
+
+import io.reactivex.Observable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -58,8 +60,13 @@ public class BookLocalDataSource implements BookDataSource {
 
 
     @Override
-    public Observable<Book> getBook(Long id) {
-        return Observable.just(dao.load(id));
+    public Observable<Book> getBook(final Long id) {
+        return Observable.fromCallable(new Callable<Book>() {
+            @Override
+            public Book call() throws Exception {
+                return dao.load(id);
+            }
+        });
     }
 
     @Override

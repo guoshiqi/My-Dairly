@@ -9,4 +9,6 @@
 
     <color name="text_color_item_no_deep">#9199ac</color>
     <color name="text_color_item_deep">#4f5f80</color>
+    
+    <color name="color_guide_background">#009688</color>
 </resources>

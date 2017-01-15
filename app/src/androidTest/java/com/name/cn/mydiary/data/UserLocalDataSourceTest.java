@@ -14,7 +14,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import rx.observers.TestSubscriber;
+
+import io.reactivex.observers.TestObserver;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -61,7 +62,7 @@ public class UserLocalDataSourceTest {
         mLocalDataSource.saveUser(user);
 
         //check
-        TestSubscriber<User> testSubscriber = new TestSubscriber<User>();
+        TestObserver<User> testSubscriber = new TestObserver<User>();
         mLocalDataSource.getUser(user.getId()).subscribe(testSubscriber);
         testSubscriber.assertValues(user);
     }
@@ -78,7 +79,7 @@ public class UserLocalDataSourceTest {
         user.setConfigId(config.getId());
 
         //check
-        TestSubscriber<Config> testSubscriber = new TestSubscriber<Config>();
+        TestObserver<Config> testSubscriber = new TestObserver<Config>();
         mLocalDataSource.getConfig(user.getConfigId()).subscribe(testSubscriber);
         testSubscriber.assertValue(user.getConfig());
     }
@@ -97,7 +98,7 @@ public class UserLocalDataSourceTest {
 
         mLocalDataSource.saveConfig(config);
         //check
-        TestSubscriber<Config> testSubscriber = new TestSubscriber<Config>();
+        TestObserver<Config> testSubscriber = new TestObserver<Config>();
         mLocalDataSource.getConfig(user.getConfigId()).subscribe(testSubscriber);
         testSubscriber.assertValue(config);
 

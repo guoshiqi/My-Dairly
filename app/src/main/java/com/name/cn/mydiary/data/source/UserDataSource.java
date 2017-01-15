@@ -4,7 +4,7 @@ import com.name.cn.mydiary.data.BookList;
 import com.name.cn.mydiary.data.Config;
 import com.name.cn.mydiary.data.User;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 
 /**

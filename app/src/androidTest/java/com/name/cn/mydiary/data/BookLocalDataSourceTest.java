@@ -16,7 +16,7 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
-import rx.observers.TestSubscriber;
+import io.reactivex.observers.TestObserver;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
@@ -61,7 +61,7 @@ public class BookLocalDataSourceTest {
         mLocalDataSource.saveBook(newBook);
 
         // Then the task can be retrieved from the persistent repository
-        TestSubscriber<Book> testSubscriber = new TestSubscriber<Book>();
+        TestObserver<Book> testSubscriber = new TestObserver<Book>();
         mLocalDataSource.getBook(newBook.getId()).subscribe(testSubscriber);
         testSubscriber.assertValues(newBook);
     }
@@ -78,9 +78,10 @@ public class BookLocalDataSourceTest {
         mLocalDataSource.deleteBooks(1L);
 
         // Then the retrieved tasks is an empty list
-        TestSubscriber<List<Book>> testSubscriber = new TestSubscriber<List<Book>>();
+        TestObserver<List<Book>> testSubscriber = new TestObserver<List<Book>>();
         mLocalDataSource.getAllBooks(1L).subscribe(testSubscriber);
-        List<Book> result = testSubscriber.getOnNextEvents().get(0);
+        List<Book> result = testSubscriber.values().get(0);
+
         assertThat(result.isEmpty(), is(true));
 
     }
@@ -90,8 +91,8 @@ public class BookLocalDataSourceTest {
     public void getTask_whenTaskNotSaved() {
         //Given that no task has been saved
         //When querying for a task, null is returned.
-        TestSubscriber<Book> testSubscriber = new TestSubscriber<Book>();
+        TestObserver<Book> testSubscriber = new TestObserver<Book>();
         mLocalDataSource.getBook(1L).subscribe(testSubscriber);
-        testSubscriber.assertValue(null);
+        testSubscriber.assertFailure(NullPointerException.class);
     }
 }

@@ -29,6 +29,9 @@ import java.util.Date;
 
 @Entity
 public class User {
+    public static final int MALE = 0;
+    public static final int FEMALE = 1;
+
     @Id(autoincrement = true)
     private Long Id;
 

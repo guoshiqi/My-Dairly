@@ -4,7 +4,8 @@ import com.name.cn.mydiary.data.bookdetail.Book;
 
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
+
 
 /**
  * 对于首页每本note的数据操作

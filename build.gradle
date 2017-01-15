@@ -28,7 +28,7 @@ task clean(type: Delete) {
 // Define versions in a single place
 ext {
     // Sdk and tools
-    minSdkVersion = 17
+    minSdkVersion = 19
     targetSdkVersion = 24
     compileSdkVersion = 24
     buildToolsVersion = '24.0.2'
@@ -43,14 +43,16 @@ ext {
     runnerVersion = '0.5'
     rulesVersion = '0.5'
     espressoVersion = '2.2.2'
-    rxjavaVersion = '1.1.8'
-    rxandroidVersion = '1.2.1'
+    rxjavaVersion = '2.0.4'
+    rxandroidVersion = '2.0.1'
     sqlbriteVersion = '0.7.0'
     rxbusVersion = '1.0.5'
-    awaitilityVersion='2.0.0';
-    baseRecyAdapterVersion='2.6.6';
-    leakcanaryVersion='1.5';
-    pathviewVersion='1.0.8@aar';
-    greendaoVersion='3.2.0';
+    awaitilityVersion = '2.0.0';
+    baseRecyAdapterVersion = '2.6.6';
+    leakcanaryVersion = '1.5';
+    pathviewVersion = '1.0.8@aar';
+    greendaoVersion = '3.2.0';
+    callIgraphyVersion = '2.2.0';
+    loggerVersion = '1.15';
 }
 

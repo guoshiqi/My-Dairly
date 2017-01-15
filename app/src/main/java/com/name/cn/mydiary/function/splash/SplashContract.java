@@ -4,6 +4,8 @@ import com.name.cn.mydiary.data.User;
 import com.name.cn.mydiary.framework.BasePresenter;
 import com.name.cn.mydiary.framework.BaseView;
 
+import io.reactivex.CompletableEmitter;
+
 /**
  * 约定
  * Created by Administrator on 2016-12-25.
@@ -18,6 +20,17 @@ public interface SplashContract {
         void gotoHomePage(User user);
 
         boolean isActive();
+
+        void runPathAnim(CompletableEmitter completableEmitter);
+
+        void runBackGroundAnim(CompletableEmitter emitter);
+
+        void runCircleAnim(CompletableEmitter emitter);
+
+        void runScaleAnim(CompletableEmitter emitter);
+
+        void runAlphaAnim(CompletableEmitter emitter);
+
     }
 
 
@@ -25,7 +38,6 @@ public interface SplashContract {
         void checkDataBaseVersion();
 
         void checkUser();
-
 
         void saveUser(int sex, String name, String url);
     }

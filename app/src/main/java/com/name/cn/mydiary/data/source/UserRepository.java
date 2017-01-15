@@ -7,7 +7,7 @@ import com.name.cn.mydiary.data.BookList;
 import com.name.cn.mydiary.data.Config;
 import com.name.cn.mydiary.data.User;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -150,20 +150,23 @@ public class UserRepository implements UserDataSource {
         return mUserLocalDataSource
                 .getUser(Id)
                 .doOnNext(user -> mUser = user)
-                .first();
+                .firstElement()
+                .toObservable();
     }
 
     private Observable<Config> getConfigWithUserId(Long Id) {
         return mUserLocalDataSource
                 .getConfig(Id)
                 .doOnNext(config -> mConfig = config)
-                .first();
+                .firstElement()
+                .toObservable();
     }
 
     private Observable<BookList> getBookListWithId(Long Id) {
         return mUserLocalDataSource
                 .getBookList(Id)
                 .doOnNext(bookList -> mBookList = bookList)
-                .first();
+                .firstElement()
+                .toObservable();
     }
 }

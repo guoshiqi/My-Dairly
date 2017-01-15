@@ -14,7 +14,8 @@ import com.name.cn.mydiary.data.source.local.dao.UserDao;
 import com.name.cn.mydiary.util.database.GreenDaoManager;
 import com.name.cn.mydiary.util.schedulers.BaseSchedulerProvider;
 
-import rx.Observable;
+
+import io.reactivex.Observable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
