@@ -14,7 +14,6 @@ import com.squareup.leakcanary.LeakCanary;
 
 import java.util.List;
 
-
 import io.reactivex.Observable;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 

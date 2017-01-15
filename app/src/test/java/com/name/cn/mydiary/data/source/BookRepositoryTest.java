@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.google.common.collect.Lists;
 import com.name.cn.mydiary.data.bookdetail.Book;
-import com.name.cn.mydiary.data.bookdetail.Journal;
 
 import org.junit.After;
 import org.junit.Before;
@@ -17,7 +16,6 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
-
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

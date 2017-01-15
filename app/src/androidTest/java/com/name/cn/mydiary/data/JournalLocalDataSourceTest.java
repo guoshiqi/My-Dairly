@@ -16,9 +16,7 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
-
 import io.reactivex.observers.TestObserver;
-import io.reactivex.subscribers.TestSubscriber;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;

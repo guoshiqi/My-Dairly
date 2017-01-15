@@ -7,5 +7,4 @@
     android:repeatCount="0"
     android:interpolator="@android:anim/accelerate_interpolator"
     android:repeatMode="reverse"
-    android:valueType="intType">
-</objectAnimator>
+    android:valueType="intType"></objectAnimator>

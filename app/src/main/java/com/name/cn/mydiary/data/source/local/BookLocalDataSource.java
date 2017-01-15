@@ -16,7 +16,6 @@ import org.greenrobot.greendao.query.DeleteQuery;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-
 import io.reactivex.Observable;
 
 import static com.google.common.base.Preconditions.checkNotNull;

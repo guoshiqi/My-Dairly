@@ -2,6 +2,7 @@ package com.name.cn.mydiary.data;
 
 
 import com.name.cn.mydiary.data.bookdetail.Book;
+import com.name.cn.mydiary.data.source.local.dao.BookDao;
 import com.name.cn.mydiary.data.source.local.dao.BookListDao;
 import com.name.cn.mydiary.data.source.local.dao.DaoSession;
 
@@ -9,11 +10,9 @@ import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.ToMany;
 
 import java.util.List;
-import com.name.cn.mydiary.data.source.local.dao.BookDao;
 
 /**
  * 首页包含类型

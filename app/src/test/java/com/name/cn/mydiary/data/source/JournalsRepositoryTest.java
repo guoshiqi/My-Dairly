@@ -14,8 +14,6 @@ import org.mockito.MockitoAnnotations;
 import java.util.Collections;
 import java.util.List;
 
-;
-
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
 
@@ -24,6 +22,8 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+;
 
 /**
  * 测试cache

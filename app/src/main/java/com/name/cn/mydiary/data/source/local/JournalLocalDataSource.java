@@ -10,11 +10,8 @@ import com.name.cn.mydiary.data.source.local.dao.JournalDao;
 import com.name.cn.mydiary.util.database.GreenDaoManager;
 import com.name.cn.mydiary.util.schedulers.BaseSchedulerProvider;
 
-
-
 import java.util.List;
 import java.util.concurrent.Callable;
-
 
 import io.reactivex.Observable;
 
