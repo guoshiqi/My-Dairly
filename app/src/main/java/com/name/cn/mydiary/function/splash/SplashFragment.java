@@ -246,8 +246,8 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
         title.setText(getString(R.string.guide_step2_question));
         headView.setOnClickListener(v -> {
             if (photoPickUtils == null)
-                photoPickUtils = new PhotoPickUtils(getActivity(), "photo", null);
-            photoPickUtils.showPhotoSelect();
+                photoPickUtils = new PhotoPickUtils("photo", null);
+            photoPickUtils.showPhotoSelect(getActivity());
         });
         confirm.setOnClickListener(v -> {
             name = editText.getText().toString().trim();
@@ -259,7 +259,7 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (photoPickUtils != null)
-            photoPickUtils.onActivityResultWithClip(requestCode, resultCode, data, uri -> {
+            photoPickUtils.onActivityResultWithClip(getActivity(), requestCode, resultCode, data, uri -> {
                 try {
                     url = uri.getPath();
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
@@ -270,5 +270,8 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
             });
     }
 
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 }

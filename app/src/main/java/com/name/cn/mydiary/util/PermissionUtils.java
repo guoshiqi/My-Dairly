@@ -51,11 +51,10 @@ public class PermissionUtils {
             , String[] permissions, OnPermissionListener callback){
 
         checkCallingObjectSuitability(object);
-        mOnPermissionListener = callback;
 
         if(checkPermissions(getContext(object), permissions)){
-            if(mOnPermissionListener != null)
-                mOnPermissionListener.onPermissionGranted();
+            if(callback != null)
+                callback.onPermissionGranted();
         }else{
             List<String> deniedPermissions = getDeniedPermissions(getContext(object), permissions);
             if(deniedPermissions.size() > 0){
@@ -96,13 +95,13 @@ public class PermissionUtils {
      */
     public static void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if(mRequestCode != -1 && requestCode == mRequestCode){
-            if(verifyPermissions(grantResults)){
-                if(mOnPermissionListener != null)
-                    mOnPermissionListener.onPermissionGranted();
-            }else{
-                if(mOnPermissionListener != null)
-                    mOnPermissionListener.onPermissionDenied();
-            }
+//            if(verifyPermissions(grantResults)){
+//                if(mOnPermissionListener != null)
+//                    mOnPermissionListener.onPermissionGranted();
+//            }else{
+//                if(mOnPermissionListener != null)
+//                    mOnPermissionListener.onPermissionDenied();
+//            }
         }
     }
 
@@ -222,6 +221,5 @@ public class PermissionUtils {
         void onPermissionDenied();
     }
 
-    private static OnPermissionListener mOnPermissionListener;
 
 }

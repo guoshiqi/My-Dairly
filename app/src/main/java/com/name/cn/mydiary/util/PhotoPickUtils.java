@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 
@@ -29,51 +30,53 @@ public class PhotoPickUtils {
     private static final int CUT_OK = 1001;
     private static final int CAMERA_OK = 1002;
     private NoPermissionDone listener;
-    private Activity activity;
     private Uri uriTempFile;
 
-    public PhotoPickUtils(Activity activity, String fileName, NoPermissionDone listener) {
-        this.activity = activity;
+    public PhotoPickUtils(String fileName, NoPermissionDone listener) {
         this.listener = listener;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            File imagePath = new File(activity.getFilesDir(), "images");
+            File imagePath = new File(DiaryApplication.getInstance().getFilesDir(), "images");
             File newFile = new File(imagePath, fileName + ".jpg");
-            uriTempFile = FileProvider.getUriForFile(activity,
+            uriTempFile = FileProvider.getUriForFile(DiaryApplication.getInstance(),
                     "cn.suncloud.kopak.fileprovider", newFile);
         } else {
             uriTempFile = Uri.parse("file://" + "/" + Environment.getExternalStorageDirectory().getPath() + "/" + fileName + ".jpg");
         }
     }
 
-    public void showPhotoSelect() {
-        showPhotoSelectDialog();
+    public void showPhotoSelect(Fragment fragment) {
+        showPhotoSelectDialog(fragment.getActivity());
+    }
+
+    public void showPhotoSelect(Activity activity) {
+        showPhotoSelectDialog(activity);
     }
 
 
-    private void showPhotoSelectDialog() {
+    private void showPhotoSelectDialog(Activity activity) {
         if (activity != null) {
             String[] arr = {"拍照", "相册"};
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
             alertDialogBuilder
                     .setItems(arr, (dialogInterface, index) -> {
                         if (index == 0) {
-                            useCamera();
+                            useCamera(activity);
                         } else if (index == 1) {
-                            useAlbum();
+                            useAlbum(activity);
                         }
                         dialogInterface.dismiss();
                     }).show();
         }
     }
 
-    private void choicePicFromAlbum() {
+    private void choicePicFromAlbum(Activity activity) {
         // 来自相册
         Intent albumIntent = new Intent(Intent.ACTION_PICK, null);
         albumIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         activity.startActivityForResult(albumIntent, ALBUM_OK);
     }
 
-    private void choicePicFromCamera() {
+    private void choicePicFromCamera(Activity activity) {
         // 来自相机
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // 下面这句指定调用相机拍照后的照片存储的路径，这样通过这个uri就可以得到这个照片了
@@ -84,14 +87,14 @@ public class PhotoPickUtils {
         activity.startActivityForResult(cameraIntent, CAMERA_OK);// CAMERA_OK是用作判断返回结果的标识
     }
 
-    private void useCamera() {
+    private void useCamera(Activity activity) {
         PermissionUtils.requestPermissionsResult(activity,
                 AppConstants.REQUEST_CODE_ASK_PERMISSIONS_CAMERA,
                 new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                 new PermissionUtils.OnPermissionListener() {
                     @Override
                     public void onPermissionGranted() {
-                        choicePicFromCamera();
+                        choicePicFromCamera(activity);
                     }
 
                     @Override
@@ -104,14 +107,14 @@ public class PhotoPickUtils {
                 });
     }
 
-    private void useAlbum() {
+    private void useAlbum(Activity activity) {
         PermissionUtils.requestPermissionsResult(activity,
                 AppConstants.REQUEST_CODE_ASK_PERMISSIONS_CAMERA,
                 new String[]{Manifest.permission.CAMERA},
                 new PermissionUtils.OnPermissionListener() {
                     @Override
                     public void onPermissionGranted() {
-                        choicePicFromAlbum();
+                        choicePicFromAlbum(activity);
                     }
 
                     @Override
@@ -124,7 +127,7 @@ public class PhotoPickUtils {
                 });
     }
 
-    private void clipPhoto(Uri uri) {
+    private void clipPhoto(Activity activity, Uri uri) {
 
         Intent intent = new Intent("com.android.camera.action.CROP");
         //可以选择图片类型，如果是*表明所有类型的图片
@@ -150,7 +153,7 @@ public class PhotoPickUtils {
         activity.startActivityForResult(intent, CUT_OK);
     }
 
-    public void onActivityResultWithClip(int requestCode, int resultCode, Intent data, PhotoReturnUri uri) {
+    public void onActivityResultWithClip(Activity activity, int requestCode, int resultCode, Intent data, PhotoReturnUri uri) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case ALBUM_OK:
@@ -158,11 +161,11 @@ public class PhotoPickUtils {
                         return;
                     Uri albumUri = data.getData();
                     if (albumUri != null) {
-                        clipPhoto(albumUri);
+                        clipPhoto(activity, albumUri);
                     }
                     break;
                 case CAMERA_OK:
-                    clipPhoto(uriTempFile);
+                    clipPhoto(activity, uriTempFile);
                     break;
                 case CUT_OK:
                     uri.getUri(uriTempFile);

@@ -77,9 +77,10 @@ public class HomeActivity extends BaseActivity {
             HomeFilterType currentFiltering =
                     (HomeFilterType) savedInstanceState.getSerializable(CURRENT_FILTERING_KEY);
             mHomePresenter.setFiltering(currentFiltering);
+        }else {
+            Intent intent = new Intent(this, SplashActivity.class);
+            startActivityForResult(intent, AppConstants.REQUEST_CODE_DEFAULT);
         }
-        Intent intent = new Intent(this, SplashActivity.class);
-        startActivityForResult(intent, AppConstants.REQUEST_CODE_DEFAULT);
     }
 
     @TargetApi(19)

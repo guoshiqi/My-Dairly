@@ -4,18 +4,19 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@mipmap/theme_bg_taki"
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/transparent">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
+            android:background="@color/transparent"
             android:minHeight="?attr/actionBarSize"
             android:paddingTop="@dimen/status_bar_height"
             android:theme="@style/Toolbar"
@@ -29,6 +30,7 @@
 
         <FrameLayout
             android:id="@+id/contentFrame"
+            android:background="@android:color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
